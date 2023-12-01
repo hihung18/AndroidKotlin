@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_24"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/my_location_24"
+            android:title="Location" />
+        <item
+            android:id="@+id/nav_personal"
+            android:icon="@drawable/user_login"
+            android:title="Personal" />
+    </group>
+
+    <item android:title="">
+    <menu>
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="LogOut" />
+    </menu>
+
+    </item>
+</menu>
