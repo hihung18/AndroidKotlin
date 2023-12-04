@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -77,4 +78,13 @@ dependencies {
     //lottie-android
     implementation 'com.airbnb.android:lottie:6.0.0'
     implementation 'com.sun.mail:android-activation:1.6.7'
+    //map
+    implementation 'com.google.android.gms:play-services-maps:18.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:32.6.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    ///amazon S3
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.25.0'
 }

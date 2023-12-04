@@ -10,6 +10,7 @@ data class BusinessTrip (
     var  name_trip : String,
     var  detail_trip: String,
     var  location_trip: String,
+    var  link_googleMap: String,
     var  time_begin_trip: String,
     var  time_end_trip: String,
     var  time_cre_trip: String,

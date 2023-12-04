@@ -8,6 +8,7 @@ data class Task(
     var  userID: Int,
     var  nameTask :String,
     var  detailTask : String,
-    var  statusTask : Int,
+    var  statusConfirm : Int,
+    var  statusComplete : Int,
     var  time_cre_task : String,
 ) : Serializable

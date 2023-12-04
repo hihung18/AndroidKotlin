@@ -69,7 +69,9 @@ class ForgotPassword_SetPass : AppCompatActivity() {
             }
             handleLoginApi()
         })
-        btnPrevious.setOnClickListener { finish() }
+        btnPrevious.setOnClickListener(){
+            onBackPressed()
+        }
 
 
         // Show password

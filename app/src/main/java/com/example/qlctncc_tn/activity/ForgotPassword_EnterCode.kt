@@ -2,8 +2,7 @@ package com.example.qlctncc_tn.activity
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.IntentFilter
-import android.net.ConnectivityManager
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -14,8 +13,8 @@ import com.example.qlctncc_tn.R
 
 import com.example.qlctncc_tn.Util.ShowDialog
 import java.lang.String
-import java.util.*
 
+@Suppress("DEPRECATION")
 class ForgotPassword_EnterCode : AppCompatActivity() {
     lateinit var btnEnterCode: Button
     lateinit var txtEnterCode: EditText
@@ -44,7 +43,9 @@ class ForgotPassword_EnterCode : AppCompatActivity() {
             val intent = Intent(this@ForgotPassword_EnterCode, ForgotPassword_SetPass::class.java)
             startActivity(intent)
         })
-        btnPrevious.setOnClickListener { finish() }
+        btnPrevious.setOnClickListener(){
+            onBackPressed()
+        }
     }
 
     private fun addControl() {

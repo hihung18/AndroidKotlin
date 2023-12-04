@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.qlctncc_tn.Model.BusinessTrip
 import com.example.qlctncc_tn.Model.User
+import com.example.qlctncc_tn.Model.UserDetail
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
 import com.example.qlctncc_tn.adapter.BusinessTripAdapter
@@ -19,16 +20,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
+    companion object{
+        var listAllUser: List<UserDetail> = ArrayList<UserDetail>()
+    }
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     val userInfoLogin = LoginActivity.userInfoLogin
     var businessTrip: List<BusinessTrip> = ArrayList<BusinessTrip>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+        getAllUser()
         setControl()
         ActionBar()
         getListBusinessTripbyUserID()
@@ -46,14 +49,15 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_location -> {
+                    val intent = Intent(applicationContext, LocationActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_personal -> {
                     val intent = Intent(applicationContext, PersonalActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_logOut -> {
-                    val logout = Intent(applicationContext, LoginActivity::class.java)
-                    startActivity(logout)
+                    finish()
                 }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -78,16 +82,33 @@ class HomeActivity : AppCompatActivity() {
                     listView.adapter = adapter
 
                 } else {
-                    Toast.makeText(this@HomeActivity, "Call API Errol", Toast.LENGTH_SHORT).show()
-                    println("BusinessTrip Call API Errol ")
+                    Toast.makeText(this@HomeActivity, "Call API ERROR", Toast.LENGTH_SHORT).show()
+                    println("BusinessTrip Call API ERROR ")
                 }
             }
 
             override fun onFailure(call: Call<List<BusinessTrip>>, t: Throwable) {
-                Toast.makeText(this@HomeActivity, "Call API Errol  $t", Toast.LENGTH_SHORT).show()
-                println("BusinessTrip Call API Errol  $t")
+                Toast.makeText(this@HomeActivity, "Call API ERROR  $t", Toast.LENGTH_SHORT).show()
+                println("BusinessTrip Call API ERROR  $t")
             }
         })
+    }
+    private fun getAllUser() {
+        RetrofitClient.apiService.getAllUSer()
+            .enqueue(object : Callback<List<UserDetail>> {
+                override fun onResponse(call: Call<List<UserDetail>>, response: Response<List<UserDetail>>
+                ) {
+                    if (response.isSuccessful){
+                        listAllUser = response.body()?: emptyList()
+                        println("get All User Call API Success ")
+                    }else {
+                        println("get All User Call API ERROR ")
+                    }
+                }
+                override fun onFailure(call: Call<List<UserDetail>>, t: Throwable) {
+                    println("get All User Call API ERROR ")
+                }
+            })
     }
 
 }

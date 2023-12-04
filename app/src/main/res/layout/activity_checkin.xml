@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.CheckinActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_toolbar"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnPreviousCheckinActivity"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:tint="@color/orange" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/orange"
+            android:layout_marginLeft="30sp"
+            android:layout_marginEnd="40dp"
+            android:gravity="center"
+            android:text="Check-in"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnTakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="5dp"
+        android:background="@drawable/input_login"
+        android:backgroundTint="@color/orange_hint"
+        android:drawableTop="@drawable/baseline_add_photo_alternate_24"
+        android:text="Take photo"
+        android:textColor="#815454"
+        android:padding="5dp"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/ivPhotoCheckin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnCheckin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Checkin"
+        android:layout_margin="10dp"
+        android:backgroundTint="#F6D259"
+        android:textColor="#815454"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_gravity="center"
+        android:background="@drawable/input_login"/>
+</LinearLayout>

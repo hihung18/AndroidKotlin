@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    tools:context=".activity.RateActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_toolbar"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btnPreviousReport"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:tint="@color/orange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Report"
+            android:textColor="@color/orange"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnAdd_Report"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_login"
+            android:backgroundTint="#F6D259"
+            android:drawableLeft="@drawable/add_24"
+            android:text="Add"
+            android:textColor="#815454"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnAddReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/edtReportDetail"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_input"
+            android:drawablePadding="10dp"
+            android:hint="Report Detail"
+            android:maxLines="1"
+            android:inputType="textMultiLine"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange_hint"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnAddImage"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:background="@drawable/input_login"
+            android:backgroundTint="@color/orange_hint"
+            android:drawableTop="@drawable/baseline_add_photo_alternate_24"
+            android:textColor="#815454"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewListImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <Button
+            android:id="@+id/btnSaveReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:layout_margin="5dp"
+            android:backgroundTint="#F6D259"
+            android:textColor="#815454"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/input_login"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/lvReport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/black"
+            android:footerDividersEnabled="false"
+            android:padding="10dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

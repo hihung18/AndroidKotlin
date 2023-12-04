@@ -7,12 +7,140 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".activity.PersonalActivity">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_toolbar"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btnPreviousRersonal"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:tint="@color/orange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Personal"
+            android:textColor="@color/orange"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="302dp"
+        android:layout_height="183dp"
+        android:layout_gravity="center"
+        android:src="@drawable/logo" />
+    <EditText
+        android:id="@+id/edtUsernameP"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/user_login"
+        android:drawablePadding="10dp"
+        android:hint="Username"
+        android:maxLines="1"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/orange"
+        android:textColorHint="@color/orange"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edtEmailP"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/email_24"
+        android:drawablePadding="10dp"
+        android:hint="Email"
+        android:maxLines="1"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/orange"
+        android:textColorHint="@color/orange"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edtFullNameP"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/name_box_24"
+        android:drawablePadding="10dp"
+        android:hint="FullName"
+        android:maxLines="1"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/orange"
+        android:textColorHint="@color/orange"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edtPhoneP"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/phone_24"
+        android:drawablePadding="10dp"
+        android:hint="Phone"
+        android:maxLines="1"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/orange"
+        android:textColorHint="@color/orange"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edtAddressP"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/my_location_24"
+        android:drawablePadding="10dp"
+        android:hint="Address"
+        android:maxLines="1"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/orange"
+        android:textColorHint="@color/orange"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnUpdateP"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:text="Personal Activity"
-        android:textSize="30sp" />
+        android:text="Update"
+        android:layout_margin="10dp"
+        android:backgroundTint="#F6D259"
+        android:textColor="#815454"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_gravity="center"
+        android:background="@drawable/input_login"/>
+    <Button
+        android:id="@+id/btnSaveP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_margin="10dp"
+        android:backgroundTint="#F6D259"
+        android:textColor="#815454"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_gravity="center"
+        android:background="@drawable/input_login"/>
 </LinearLayout>

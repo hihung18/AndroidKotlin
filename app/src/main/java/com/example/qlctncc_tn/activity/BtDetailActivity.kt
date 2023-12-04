@@ -1,7 +1,9 @@
 package com.example.qlctncc_tn.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
@@ -27,8 +29,13 @@ class BtDetailActivity : AppCompatActivity() {
     lateinit var tvDateBeginBT_detail: TextView
     lateinit var tvDateEndBT_detail: TextView
     lateinit var tvDateCreateBT_detail: TextView
+    lateinit var tvLinkGoogleMap: TextView
+    lateinit var btnRate:Button
+    lateinit var btnReport:Button
     lateinit var btnPrevious: ImageButton
-    var businessTrip: BusinessTrip? = null
+    companion object{
+        var businessTrip: BusinessTrip? = null
+    }
     var nameManager: String? = null
     var namePartner: String? = null
     var listTask: List<Task> = ArrayList<Task>()
@@ -50,12 +57,26 @@ class BtDetailActivity : AppCompatActivity() {
         tvNameBT_detail.text = businessTrip!!.name_trip
         tvLocationBT_detail.text = businessTrip!!.location_trip
         tvDetaiBT_detail.text = businessTrip!!.detail_trip
+        tvLinkGoogleMap.text = businessTrip!!.link_googleMap
         tvDateBeginBT_detail.text = convertDateFormat(businessTrip!!.time_begin_trip)
         tvDateEndBT_detail.text = convertDateFormat(businessTrip!!.time_end_trip)
         tvDateCreateBT_detail.text = convertDateFormat(businessTrip!!.time_cre_trip)
         tvPartner_detail.text = namePartner
         tvManagerBT_detail.text = nameManager
 
+        btnRate.setOnClickListener(){
+            val intent = Intent(applicationContext, RateActivity::class.java)
+            intent.putExtra("businessTripID", businessTrip?.businessTripId)
+            startActivity(intent)
+        }
+        btnReport.setOnClickListener(){
+            val intent = Intent(applicationContext, ReportActivity::class.java)
+            intent.putExtra("businessTripID", businessTrip?.businessTripId)
+            startActivity(intent)
+        }
+        btnPrevious.setOnClickListener(){
+            onBackPressed()
+        }
     }
 
     private fun setControl() {
@@ -67,7 +88,11 @@ class BtDetailActivity : AppCompatActivity() {
         tvDateBeginBT_detail = findViewById(R.id.tvDateBeginBT_detail)
         tvDateEndBT_detail = findViewById(R.id.tvDateEndBT_detail)
         tvDateCreateBT_detail = findViewById(R.id.tvDateCreateBT_detail)
+        tvLinkGoogleMap = findViewById(R.id.tvLinkGoogleMap)
         btnPrevious = findViewById(R.id.btnPreviousTripDetail)
+        btnRate = findViewById(R.id.btnRate)
+        btnReport = findViewById(R.id.btnReport)
+
     }
     private fun convertDateFormat(inputDate: String): String {
         val cutString = inputDate.take(10)
@@ -82,17 +107,18 @@ class BtDetailActivity : AppCompatActivity() {
             .enqueue(object : Callback<Partner> {
                 override fun onResponse(call: Call<Partner>, response: Response<Partner>) {
                     if (response.isSuccessful) {
+                        println("getPartner by ID Call API SuccessFul ")
                         val partner = response.body()
                         namePartner = partner?.name_pn
                         getNameManagerByID(businessTrip!!.managerID)
                     } else {
-                        Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API Errol", Toast.LENGTH_SHORT).show()
-                        println("getPartner by ID Call API Errol ")
+                        Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                        println("getPartner by ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<Partner>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API Errol", Toast.LENGTH_SHORT).show()
-                    println("getPartner by ID Call API Errol ")
+                    Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                    println("getPartner by ID Call API ERROR ")
                 }
             })
     }
@@ -105,13 +131,13 @@ class BtDetailActivity : AppCompatActivity() {
                         nameManager = userDetail?.fullName
                         getListTaskbyBusinessTripID(businessTrip!!.businessTripId)
                     } else {
-                        Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API Errol", Toast.LENGTH_SHORT).show()
-                        println("getName Manager by ID Call API Errol ")
+                        Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                        println("getName Manager by ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<UserDetail>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API Errol", Toast.LENGTH_SHORT).show()
-                    println("getName Manager by ID Call API Errol ")
+                    Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                    println("getName Manager by ID Call API ERROR ")
                 }
             })
     }
@@ -123,16 +149,21 @@ class BtDetailActivity : AppCompatActivity() {
                         listTask = response.body()?: emptyList()
                         val listView = findViewById<ListView>(R.id.lvTaskBT)
                         setEvent()
-                        val adapter = TaskAdapter(this@BtDetailActivity, listTask)
+                        val adapter : TaskAdapter
+                        if (listTask.isNotEmpty()){
+                            adapter = TaskAdapter(this@BtDetailActivity, listTask)
+                        }else {
+                            adapter = TaskAdapter(this@BtDetailActivity, emptyList())
+                        }
                         listView.adapter = adapter
                     }else {
-                        Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API Errol", Toast.LENGTH_SHORT).show()
-                        println("get List Task by business ID Call API Errol ")
+                        Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                        println("get List Task by business ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<List<Task>>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API Errol", Toast.LENGTH_SHORT).show()
-                    println("get List Task by business ID Call API Errol ")
+                    Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                    println("get List Task by business ID Call API ERROR ")
                 }
             })
     }

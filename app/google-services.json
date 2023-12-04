@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473894711932",
+    "project_id": "saveimage-4c70e",
+    "storage_bucket": "saveimage-4c70e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473894711932:android:ea471b0d19275363af4ff9",
+        "android_client_info": {
+          "package_name": "com.example.qlctncc_tn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA27XwLAKF4AwBcGdCjbRkauLfk9jgNAMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
