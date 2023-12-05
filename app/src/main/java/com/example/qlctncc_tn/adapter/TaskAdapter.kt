@@ -22,14 +22,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-
-class TaskAdapter(private val context: Context, private val listTasks: List<Task>) :
+interface TaskAdapterListener {
+    fun onCheckinClicked(taskPosition:Task)
+}
+class TaskAdapter(private val context: Context, private val listTasks: List<Task>
+,private val listener: TaskAdapterListener) :
     ArrayAdapter<Task>(context, R.layout.list_item_task, listTasks) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.list_item_task, parent, false)
         var taskPosition = listTasks[position]
-        val REQUEST_CODE_ACTIVITY_B = 123
+
         //anh xa
         val tvSTT_Task_item = rowView.findViewById<TextView>(R.id.tvSTT_Task_item)
         val tvTask_detail_item = rowView.findViewById<TextView>(R.id.tvTask_detail_item)
@@ -116,9 +119,15 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             val alertDialog = builder.create()
             alertDialog.show()
         }
+        //check-in
+        if (taskPosition.statusCheckIn == 0){
+            btnCheckinTask.setBackgroundColor(Color.RED)
+        }else if (taskPosition.statusCheckIn == 1){
+            btnCheckinTask.setBackgroundColor(Color.GREEN)
+        }
         btnCheckinTask.setOnClickListener {
-            val intent = Intent(this, CheckinActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_ACTIVITY_B)
+            println("click btn")
+            listener.onCheckinClicked(taskPosition)
         }
         return rowView
     }
@@ -136,6 +145,7 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             .enqueue(object : Callback<Task>{
                 override fun onResponse(call: Call<Task>, response: Response<Task>) {
                     if (response.isSuccessful){
+                        val taskR : Task? = response.body()
                         val builder = AlertDialog.Builder(context)
                         builder.setMessage("Successful change!")
                         builder.setNegativeButton(

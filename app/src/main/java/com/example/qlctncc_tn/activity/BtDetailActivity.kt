@@ -1,5 +1,6 @@
 package com.example.qlctncc_tn.activity
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
 import com.example.qlctncc_tn.adapter.BusinessTripAdapter
 import com.example.qlctncc_tn.adapter.TaskAdapter
+import com.example.qlctncc_tn.adapter.TaskAdapterListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
-class BtDetailActivity : AppCompatActivity() {
+class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
     lateinit var tvNameBT_detail: TextView
     lateinit var tvPartner_detail: TextView
     lateinit var tvLocationBT_detail: TextView
@@ -33,12 +35,14 @@ class BtDetailActivity : AppCompatActivity() {
     lateinit var btnRate:Button
     lateinit var btnReport:Button
     lateinit var btnPrevious: ImageButton
+    val REQUEST_CODE_ACTIVITY_B = 123
     companion object{
         var businessTrip: BusinessTrip? = null
     }
     var nameManager: String? = null
     var namePartner: String? = null
-    var listTask: List<Task> = ArrayList<Task>()
+    var listTask:MutableList<Task> = mutableListOf()
+    var adapter : TaskAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,14 +150,13 @@ class BtDetailActivity : AppCompatActivity() {
             .enqueue(object : Callback<List<Task>>{
                 override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
                     if (response.isSuccessful){
-                        listTask = response.body()?: emptyList()
+                        listTask = response.body() as MutableList<Task>
                         val listView = findViewById<ListView>(R.id.lvTaskBT)
                         setEvent()
-                        val adapter : TaskAdapter
                         if (listTask.isNotEmpty()){
-                            adapter = TaskAdapter(this@BtDetailActivity, listTask)
+                            adapter = TaskAdapter(this@BtDetailActivity, listTask,this@BtDetailActivity)
                         }else {
-                            adapter = TaskAdapter(this@BtDetailActivity, emptyList())
+                            adapter = TaskAdapter(this@BtDetailActivity, emptyList(),this@BtDetailActivity)
                         }
                         listView.adapter = adapter
                     }else {
@@ -166,5 +169,24 @@ class BtDetailActivity : AppCompatActivity() {
                     println("get List Task by business ID Call API ERROR ")
                 }
             })
+    }
+    override fun onCheckinClicked(taskPosition:Task) {
+        val intent = Intent(this, CheckinActivity::class.java)
+        intent.putExtra("taskPosition", taskPosition)
+        startActivityForResult(intent, REQUEST_CODE_ACTIVITY_B)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ACTIVITY_B) {
+            if (resultCode == Activity.RESULT_OK) {
+                val taskDataPut = data?.getSerializableExtra("taskDataPut") as Task
+                listTask.forEach{task ->
+                    if (task.taskId == taskDataPut.taskId){
+                        task.statusCheckIn = taskDataPut.statusCheckIn
+                    }
+                }
+                adapter!!.notifyDataSetChanged()
+            }
+        }
     }
 }

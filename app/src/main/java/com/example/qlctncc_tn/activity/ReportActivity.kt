@@ -9,9 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.qlctncc_tn.Model.Image
 import com.example.qlctncc_tn.Model.Report
 import com.example.qlctncc_tn.R
@@ -39,11 +37,9 @@ class ReportActivity : AppCompatActivity() {
     lateinit var btnAdd: Button
     lateinit var btnSave: Button
     lateinit var recyclerView:RecyclerView
-    lateinit var listView: ListView
     lateinit var btnAddImage: Button
     lateinit var btnPrevious: ImageButton
     lateinit var reportDetail: EditText
-    lateinit var imvImageUpload: ImageView
     lateinit var linerlayoutAdd: LinearLayout
     var adapter : ReportAdapter?=null
     var businessTripID: Int? = 0
@@ -67,7 +63,6 @@ class ReportActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
-
         btnSave.setOnClickListener(){
             val detail = reportDetail.text.toString().trim()
             if (detail.isEmpty()) {
@@ -122,33 +117,7 @@ class ReportActivity : AppCompatActivity() {
                 }
             })
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            val imageUri: Uri = data.data!!
-
-            val storageRef = Firebase.storage.reference
-            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
-
-            val uploadTask = imagesRef.putFile(imageUri)
-            uploadTask.addOnSuccessListener { taskSnapshot ->
-                imagesRef.downloadUrl.addOnSuccessListener { uri ->
-                    val imageUrl = uri.toString()
-                    listImageUrl.add(imageUrl)
-                    adapterReImage!!.notifyDataSetChanged()
-                    Toast.makeText(this@ReportActivity, "Upload Image Success", Toast.LENGTH_SHORT).show()
-
-                }.addOnFailureListener {
-                    Toast.makeText(this@ReportActivity, "Upload Image ERROR", Toast.LENGTH_SHORT).show()
-                    println("Upload ERROR")
-                }
-            }.addOnFailureListener { e ->
-                Toast.makeText(this@ReportActivity, "Upload Image ERROR", Toast.LENGTH_SHORT).show()
-                println("Upload ERROR")
-            }
-        }
-    }
     private fun postReport(reportNew: Report){
         RetrofitClient.apiService.postReport(reportNew,LoginActivity.userInfoLogin!!.token)
             .enqueue(object : Callback<Report>{
@@ -170,7 +139,6 @@ class ReportActivity : AppCompatActivity() {
                         println("Post Report is successful")
                     }else {
                         println("Post Report is ERROR")
-
                     }
                 }
                 override fun onFailure(call: Call<Report>, t: Throwable) {
@@ -186,12 +154,34 @@ class ReportActivity : AppCompatActivity() {
                         println("POST Image is successful")
                     }else {
                         println("Post Image is ERROR")
-
                     }
                 }
                 override fun onFailure(call: Call<Image>, t: Throwable) {
                     println("Post Image is ERROR" + t)
                 }
             })
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri: Uri = data.data!!
+            val storageRef = Firebase.storage.reference
+            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+            val uploadTask = imagesRef.putFile(imageUri)
+            uploadTask.addOnSuccessListener { taskSnapshot ->
+                imagesRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    listImageUrl.add(imageUrl)
+                    adapterReImage!!.notifyDataSetChanged()
+                    Toast.makeText(this@ReportActivity, "Upload Image Success", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this@ReportActivity, "Upload Image ERROR", Toast.LENGTH_SHORT).show()
+                    println("Upload ERROR")
+                }
+            }.addOnFailureListener { e ->
+                Toast.makeText(this@ReportActivity, "Upload Image ERROR", Toast.LENGTH_SHORT).show()
+                println("Upload ERROR")
+            }
+        }
     }
 }
