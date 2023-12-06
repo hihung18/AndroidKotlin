@@ -8,7 +8,7 @@
     android:padding="5sp"
     android:layout_marginLeft="10sp"
     android:layout_marginRight="10sp"
-    android:background="@drawable/background"
+    android:background="@drawable/bg_list_item"
     >
     <TextView
         android:id="@+id/tvSTT_Task_item"
@@ -27,18 +27,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/tvNameTask_item"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nhiem vu 1"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/blue"
-            android:gravity="center"
-            android:layout_gravity="left"
-            android:layout_marginLeft="5dp"
-            />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvNameTask_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nhiem vu 1"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/blue"
+                android:gravity="left"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                />
+            <TextView
+                android:id="@+id/tvRefused"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refused"
+                android:background="@drawable/bg_button_click"
+                android:textSize="16sp"
+                android:padding="2dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                />
+        </LinearLayout>
         <TextView
             android:id="@+id/tvTask_detail_item"
             android:layout_width="match_parent"
@@ -96,6 +114,19 @@
                 android:text="Confirm"
                 android:textSize="12sp" />
             <Button
+                android:id="@+id/btnRefuseTask"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:text="Refuse"
+                android:background="@drawable/bg_button_click"
+                android:textSize="12sp"
+                android:padding="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"
+                />
+            <Button
                 android:id="@+id/btnCheckinTask"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -123,6 +154,4 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

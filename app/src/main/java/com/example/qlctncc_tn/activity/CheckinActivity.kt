@@ -71,17 +71,6 @@ class CheckinActivity : AppCompatActivity() {
             }
         }
         btnCheckin.setOnClickListener(){
-            var nameUser = ""
-            for (user in HomeActivity.listAllUser){
-                if (user.userId == taskPosition!!.userID){
-                    if (user.fullName ==""){
-                        nameUser = user.username
-                        break
-                    }
-                    nameUser = user.fullName
-                    break
-                }
-            }
             var detail = "CHECK-IN: " + taskPosition!!.nameTask
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
@@ -113,16 +102,9 @@ class CheckinActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val filee = File(currentPhotoPath)
-            val imageBitmap = BitmapFactory.decodeFile(filee.absolutePath)
-
             val storageRef = Firebase.storage.reference
-            val file = File(externalMediaDirs.first(), "${UUID.randomUUID()}.jpg")
-            val outputStream = FileOutputStream(file)
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            val imagesRef = storageRef.child("images/${file.name}")
-            val uploadTask = imagesRef.putFile(Uri.fromFile(file))
+            val imagesRef = storageRef.child("images/${filee.name}")
+            val uploadTask = imagesRef.putFile(Uri.fromFile(filee))
             uploadTask.addOnSuccessListener { taskSnapshot ->
                 imagesRef.downloadUrl.addOnSuccessListener { uri ->
                     val imageUrl = uri.toString()
@@ -144,7 +126,7 @@ class CheckinActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Report>, response: Response<Report>) {
                     if (response.isSuccessful){
                         val rp = response.body()
-                        var imageNew: Image = Image(0,"",rp!!.reportId)
+                        var imageNew = Image(0,"",rp!!.reportId)
                         for (url in listImageUrl){
                             imageNew.imageUrl = url
                             postImage(imageNew)

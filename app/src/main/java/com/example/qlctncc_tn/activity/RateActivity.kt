@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
-class RateActivity : AppCompatActivity(), RateAdapter.RateAdapterListener {
+class RateActivity : AppCompatActivity() {
     var listRate: MutableList<Rate> = mutableListOf()
     lateinit var btnAdd:Button
     lateinit var btnSave:Button
@@ -26,19 +26,16 @@ class RateActivity : AppCompatActivity(), RateAdapter.RateAdapterListener {
     lateinit var linerlayoutAdd: LinearLayout
     var adapter : RateAdapter?=null
     var businessTripID: Int? = 0
-    var checkAdd = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rate)
-        adapter = RateAdapter(this, listRate, this)
+        adapter = RateAdapter(this, listRate)
         businessTripID = intent.getIntExtra("businessTripID",-1)
         setControls()
         getListRatebyBusinessTripID(businessTripID!!)
     }
-
     private fun setEvent() {
         btnAdd.setOnClickListener(){
-            checkAdd = true
             linerlayoutAdd.visibility = View.VISIBLE
             edtCommentRate.text.clear()
         }
@@ -54,10 +51,8 @@ class RateActivity : AppCompatActivity(), RateAdapter.RateAdapterListener {
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val formattedDate = formatter.format(currentDate)
-            var rateNew: Rate = Rate(0,businessTripID,userID,comment,formattedDate)
-            if (checkAdd){
-                postRate(rateNew)
-            }
+            var rateNew = Rate(0,businessTripID,userID,comment,formattedDate)
+            postRate(rateNew)
         }
         btnPrevious.setOnClickListener(){
             super.onBackPressed()
@@ -79,9 +74,9 @@ class RateActivity : AppCompatActivity(), RateAdapter.RateAdapterListener {
                         listRate = response.body() as MutableList<Rate>
                         val listView = findViewById<ListView>(R.id.lvRate)
                         if(listRate.isNotEmpty()){
-                             adapter = RateAdapter(this@RateActivity, listRate,this@RateActivity)
+                             adapter = RateAdapter(this@RateActivity, listRate)
                         }else {
-                            adapter = RateAdapter(this@RateActivity, emptyList(),this@RateActivity)
+                            adapter = RateAdapter(this@RateActivity, emptyList())
                         }
                         listView.adapter = adapter
                         setEvent()
@@ -119,52 +114,4 @@ class RateActivity : AppCompatActivity(), RateAdapter.RateAdapterListener {
 
             })
     }
-    override fun onEditRateClicked(position: Int) {
-        linerlayoutAdd.visibility = View.VISIBLE
-        checkAdd = false
-        edtCommentRate.text.clear()
-        var ratePositionAc = listRate[position]
-        edtCommentRate.setText(ratePositionAc.commentRate)
-        btnSave.setOnClickListener(){
-            val comment = edtCommentRate.text.toString().trim()
-            if (comment.isEmpty()) {
-                val dialog = Dialog(this)
-                val showDialog = ShowDialog(dialog, false, "Please enter Comment", this, LoginActivity::class.java, true)
-                return@setOnClickListener
-            }
-            ratePositionAc.commentRate = comment
-            if (!checkAdd){
-                putRate(ratePositionAc.rateId,ratePositionAc)
-            }
-        }
-        // Thực hiện các thay đổi khác liên quan đến việc nhấn nút Edit ở đây
-    }
-    private fun putRate(rateID:Int,rate:Rate){
-        val token = LoginActivity.userInfoLogin?.token!!
-        RetrofitClient.apiService.putRate(rateID,rate,token)
-            .enqueue(object : Callback<Rate>{
-                override fun onResponse(call: Call<Rate>, response: Response<Rate>) {
-                    if(response.isSuccessful){
-                        val rateNew = response.body()
-                        linerlayoutAdd.visibility = View.GONE
-                        for (i in listRate.indices) {
-                            val rate = listRate[i]
-                            if (rate.rateId == rateNew?.rateId) {
-                                listRate[i] = rateNew // Gán phần tử có rateId trùng với rateNew bằng rateNew
-                                break
-                            }
-                        }
-                        adapter!!.notifyDataSetChanged()
-                        Toast.makeText(this@RateActivity, "PUT Rate Success!", Toast.LENGTH_SHORT).show()
-                        println("PUT Rate is successful")
-                    }else{
-                        println("PUT Rate is ERROR")
-                    }
-                }
-                override fun onFailure(call: Call<Rate>, t: Throwable) {
-                    println("PUT Rate is ERROR" + t)
-                }
-            })
-    }
-
 }

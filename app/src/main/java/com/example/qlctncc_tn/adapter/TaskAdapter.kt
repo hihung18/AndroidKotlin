@@ -1,19 +1,21 @@
 package com.example.qlctncc_tn.adapter
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.example.qlctncc_tn.Model.Rate
 import com.example.qlctncc_tn.Model.Task
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
+import com.example.qlctncc_tn.Util.ShowDialog
+import com.example.qlctncc_tn.activity.BtDetailActivity
 import com.example.qlctncc_tn.activity.CheckinActivity
 import com.example.qlctncc_tn.activity.HomeActivity
 import com.example.qlctncc_tn.activity.LoginActivity
@@ -23,32 +25,36 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 interface TaskAdapterListener {
+    fun onRefuseClicked(taskPosition: Task)
     fun onCheckinClicked(taskPosition:Task)
 }
 class TaskAdapter(private val context: Context, private val listTasks: List<Task>
 ,private val listener: TaskAdapterListener) :
     ArrayAdapter<Task>(context, R.layout.list_item_task, listTasks) {
+    lateinit var  btnConfirmTask : Button
+    lateinit var  btnRefuseTask : Button
+    lateinit var  tvRefused : TextView
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.list_item_task, parent, false)
         var taskPosition = listTasks[position]
-
         //anh xa
         val tvSTT_Task_item = rowView.findViewById<TextView>(R.id.tvSTT_Task_item)
         val tvTask_detail_item = rowView.findViewById<TextView>(R.id.tvTask_detail_item)
         val tvNameTask_item = rowView.findViewById<TextView>(R.id.tvNameTask_item)
         val tvUserTask_item = rowView.findViewById<TextView>(R.id.tvUserTask_item)
         val tvDateTask_cre_item = rowView.findViewById<TextView>(R.id.tvDateTask_cre_item)
+        tvRefused = rowView.findViewById(R.id.tvRefused)
         val btnCompleteTask = rowView.findViewById<Button>(R.id.btnCompleteTask)
         val btnCheckinTask = rowView.findViewById<Button>(R.id.btnCheckinTask)
-        val btnConfirmTask = rowView.findViewById<Button>(R.id.btnConfirmTask)
-//        set
+        btnConfirmTask = rowView.findViewById(R.id.btnConfirmTask)
+        btnRefuseTask = rowView.findViewById(R.id.btnRefuseTask)
+
         tvSTT_Task_item.text = (position+1).toString()
         tvTask_detail_item.text = taskPosition.detailTask
         tvNameTask_item.text = taskPosition.nameTask
         tvUserTask_item.text = taskPosition.userID.toString()
         tvDateTask_cre_item.text ="Ngày tạo: "+ convertDateFormat(taskPosition.time_cre_task)
-
         for (user in HomeActivity.listAllUser){
             if (user.userId == taskPosition.userID){
                 if (user.fullName ==""){
@@ -59,18 +65,29 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
                 break
             }
         }
+        tvRefused.visibility = View.GONE
+        btnConfirmTask.visibility = View.GONE
+        btnRefuseTask.visibility = View.GONE
+        btnCheckinTask.visibility = View.GONE
+        btnCompleteTask.visibility = View.GONE
         ///check userID
         if (taskPosition.userID == LoginActivity.userInfoLogin?.id){
-            btnCompleteTask.visibility = View.VISIBLE
-            btnCheckinTask.visibility = View.VISIBLE
-            btnConfirmTask.visibility = View.VISIBLE
 
-        }else{
-            btnCompleteTask.visibility = View.GONE
-            btnCheckinTask.visibility = View.GONE
-            btnConfirmTask.visibility = View.GONE
+            if (taskPosition.statusConfirm == -1){
+                tvRefused.visibility = View.VISIBLE
+
+            }
+            else if (taskPosition.statusConfirm == 0){
+                btnConfirmTask.visibility = View.VISIBLE
+                btnRefuseTask.visibility = View.VISIBLE
+            }
+            else{
+                btnConfirmTask.visibility = View.VISIBLE
+                btnCheckinTask.visibility = View.VISIBLE
+            }
+            if (taskPosition.statusCheckIn == 1)
+                btnCompleteTask.visibility = View.VISIBLE
         }
-        //check statusComplete
         if (taskPosition.statusComplete == 1){
             btnCompleteTask.setBackgroundColor(Color.RED)
         }else if (taskPosition.statusComplete == 3){
@@ -85,8 +102,6 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             builder.setMessage("You have definitely completed it?")
             builder.setPositiveButton("Yes") { dialog, id ->
                 taskPosition.statusComplete = 2
-                btnCompleteTask.setBackgroundColor(Color.DKGRAY)
-                btnCompleteTask.setText("CENSORING")
                 putTask(taskPosition.taskId,taskPosition)
                 notifyDataSetChanged()
             }
@@ -97,19 +112,15 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             alertDialog.show()
         }
         //check statusConfirm
-        if (taskPosition.statusConfirm == 0){
-            btnConfirmTask.setBackgroundColor(Color.RED)
-        }else{
+        if (taskPosition.statusConfirm == 1)
             btnConfirmTask.setBackgroundColor(Color.GREEN)
-        }
+
         btnConfirmTask.setOnClickListener(){
             if (taskPosition.statusConfirm == 1) return@setOnClickListener
             val builder = AlertDialog.Builder(context)
             builder.setMessage("You definitely confirm the task?")
             builder.setPositiveButton("Yes") { dialog, id ->
                 taskPosition.statusConfirm=1
-                btnCompleteTask.setBackgroundColor(Color.GREEN)
-                btnCompleteTask.setText("CENSORING")
                 putTask(taskPosition.taskId,taskPosition)
                 notifyDataSetChanged()
             }
@@ -129,6 +140,9 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             println("click btn")
             listener.onCheckinClicked(taskPosition)
         }
+        btnRefuseTask.setOnClickListener(){
+            listener.onRefuseClicked(taskPosition)
+        }
         return rowView
     }
     private fun convertDateFormat(inputDate: String): String {
@@ -145,7 +159,6 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             .enqueue(object : Callback<Task>{
                 override fun onResponse(call: Call<Task>, response: Response<Task>) {
                     if (response.isSuccessful){
-                        val taskR : Task? = response.body()
                         val builder = AlertDialog.Builder(context)
                         builder.setMessage("Successful change!")
                         builder.setNegativeButton(
@@ -162,5 +175,4 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
                 }
             })
     }
-
 }

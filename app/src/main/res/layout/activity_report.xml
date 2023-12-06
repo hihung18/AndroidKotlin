@@ -109,9 +109,10 @@
             android:id="@+id/lvReport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/black"
             android:footerDividersEnabled="false"
-            android:padding="10dp" />
+            android:paddingLeft="10dp"
+            android:dividerHeight="10dp"
+            android:divider="@android:color/transparent"/>
     </LinearLayout>
 
 

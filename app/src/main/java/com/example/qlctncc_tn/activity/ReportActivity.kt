@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qlctncc_tn.Model.Image
 import com.example.qlctncc_tn.Model.Report
+import com.example.qlctncc_tn.Model.Task
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
 import com.example.qlctncc_tn.Util.ShowDialog
@@ -43,18 +44,22 @@ class ReportActivity : AppCompatActivity() {
     lateinit var linerlayoutAdd: LinearLayout
     var adapter : ReportAdapter?=null
     var businessTripID: Int? = 0
-    var checkAdd = false
+    var checkRefuse = false
+    var taskPosition:Task? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_report)
         businessTripID = intent.getIntExtra("businessTripID",-1)
+        if (intent.hasExtra("taskPosition")){
+            taskPosition = intent.getSerializableExtra("taskPosition") as? Task
+            if (taskPosition != null) checkRefuse = true
+        }
         setControls()
         getListRatebyBusinessTripID(businessTripID!!)
     }
     private fun setEvent(){
         btnAdd.setOnClickListener(){
-            checkAdd = true
             linerlayoutAdd.visibility = View.VISIBLE
             reportDetail.text.clear()
         }
@@ -64,7 +69,8 @@ class ReportActivity : AppCompatActivity() {
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
         btnSave.setOnClickListener(){
-            val detail = reportDetail.text.toString().trim()
+            var detail = reportDetail.text.toString().trim()
+            if (checkRefuse) detail = "REFUSE: " + taskPosition!!.nameTask + "\n" + detail
             if (detail.isEmpty()) {
                 val dialog = Dialog(this)
                 val showDialog = ShowDialog(dialog, false, "Please enter rate detail", this, LoginActivity::class.java, true)
@@ -73,7 +79,7 @@ class ReportActivity : AppCompatActivity() {
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val formattedDate = formatter.format(currentDate)
-            var reportNew: Report = Report(0,LoginActivity.userInfoLogin!!.id, businessTripID!!
+            var reportNew = Report(0,LoginActivity.userInfoLogin!!.id, businessTripID!!
                 , detail,formattedDate,listImageUrl)
             postReport(reportNew)
         }
@@ -135,6 +141,10 @@ class ReportActivity : AppCompatActivity() {
                             imageNew.imageUrl = url
                             postImage(imageNew)
                         }
+                        if (checkRefuse) {
+                            taskPosition!!.statusConfirm = -1
+                            putTask(taskPosition!!.taskId, taskPosition!!)
+                        }
                         Toast.makeText(this@ReportActivity, "Add Report Success!", Toast.LENGTH_SHORT).show()
                         println("Post Report is successful")
                     }else {
@@ -152,6 +162,7 @@ class ReportActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Image>, response: Response<Image>) {
                     if (response.isSuccessful){
                         println("POST Image is successful")
+
                     }else {
                         println("Post Image is ERROR")
                     }
@@ -184,4 +195,25 @@ class ReportActivity : AppCompatActivity() {
             }
         }
     }
+    private fun putTask(taskID:Int, taskPut:Task){
+        RetrofitClient.apiService.putTask(taskID,taskPut, LoginActivity.userInfoLogin!!.token)
+            .enqueue(object : Callback<Task>{
+                override fun onResponse(call: Call<Task>, response: Response<Task>) {
+                    if (response.isSuccessful){
+                        val taskR = response.body()
+                        println("PutTask checkin Call API SuccessFull ")
+                        val resultIntent = Intent()
+                        resultIntent.putExtra("taskDataPut", taskR)
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }else {
+                        println("PutTask checkin Call API ERROR ")
+                    }
+                }
+                override fun onFailure(call: Call<Task>, t: Throwable) {
+                    println("PutTask checkin Call API ERROR " + t)
+                }
+            })
+    }
+
 }

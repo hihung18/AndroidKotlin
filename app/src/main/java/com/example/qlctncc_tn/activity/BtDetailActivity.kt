@@ -35,7 +35,9 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
     lateinit var btnRate:Button
     lateinit var btnReport:Button
     lateinit var btnPrevious: ImageButton
-    val REQUEST_CODE_ACTIVITY_B = 123
+    val REQUEST_CODE_ACTIVITY_CHECKIN = 123
+    val REQUEST_CODE_ACTIVITY_RESUFE = 234
+
     companion object{
         var businessTrip: BusinessTrip? = null
     }
@@ -102,7 +104,6 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         val cutString = inputDate.take(10)
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
         val date: Date = inputFormat.parse(cutString) ?: Date()
         return outputFormat.format(date)
     }
@@ -170,14 +171,22 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
                 }
             })
     }
+
+    override fun onRefuseClicked(taskPosition: Task) {
+        val intent = Intent(this, ReportActivity::class.java)
+        intent.putExtra("taskPosition", taskPosition)
+        intent.putExtra("businessTripID", businessTrip?.businessTripId)
+        startActivityForResult(intent, REQUEST_CODE_ACTIVITY_RESUFE)
+    }
+
     override fun onCheckinClicked(taskPosition:Task) {
         val intent = Intent(this, CheckinActivity::class.java)
         intent.putExtra("taskPosition", taskPosition)
-        startActivityForResult(intent, REQUEST_CODE_ACTIVITY_B)
+        startActivityForResult(intent, REQUEST_CODE_ACTIVITY_CHECKIN)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_ACTIVITY_B) {
+        if (requestCode == REQUEST_CODE_ACTIVITY_CHECKIN || requestCode == REQUEST_CODE_ACTIVITY_RESUFE) {
             if (resultCode == Activity.RESULT_OK) {
                 val taskDataPut = data?.getSerializableExtra("taskDataPut") as Task
                 listTask.forEach{task ->
