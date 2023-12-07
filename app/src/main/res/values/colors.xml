@@ -7,8 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="yellow">#FFEA00</color>
-    <color name="orange">#F87612</color>
     <color name="orange_hint">#F8C297</color>
     <color name="signup">#FFB57D</color>
     <color name="gray">#DCDCDC</color>
@@ -16,8 +14,12 @@
     <color name="select_item">#9AF1EA</color>
     <color name="beige">#FAEDDF</color>
     <color name="xam">#787171</color>
-    <color name="red">#F40707</color>
+    <color name="red">#FF3D00</color>
+    <color name="orange">#FF9100</color>
+    <color name="yellow_orange">#FFC400</color>
+    <color name="yellow">#FFEA00</color>
+    <color name="green_yellow">#C6FF00</color>
+    <color name="green">#76FF03</color>
     <color name="blue">#1D3DEF</color>
-    <color name="green">#08BD65</color>
     <color name="design_default_color_error">#DA3737</color>
 </resources>

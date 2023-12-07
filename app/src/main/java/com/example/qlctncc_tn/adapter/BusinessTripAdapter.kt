@@ -1,12 +1,15 @@
 package com.example.qlctncc_tn.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Switch
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.qlctncc_tn.Model.BusinessTrip
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.activity.BtDetailActivity
@@ -24,11 +27,38 @@ class BusinessTripAdapter(private val context: Context, private val businessTrip
         val tvSttBtItem = rowView.findViewById<TextView>(R.id.tvSTT_BT_item)
         val tvNameBtItem = rowView.findViewById<TextView>(R.id.tvNameBT_item)
         val tvDateBtItem = rowView.findViewById<TextView>(R.id.tvDateBT_item)
+        val tvstatusBTItem = rowView.findViewById<TextView>(R.id.tvstatusBT_item)
         //set
         tvSttBtItem.text = (position+1).toString()
         tvNameBtItem.text = businessTrip.name_trip
-        tvDateBtItem.text = convertDateFormat(businessTrip.time_begin_trip)
+        tvDateBtItem.text = convertDateFormat(businessTrip.time_begin_trip) + " - "+ convertDateFormat(businessTrip.time_end_trip)
 
+
+        when (businessTrip.statusBusinessTrip){
+            0-> {tvstatusBTItem.text = "PREPARING"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow))
+            }
+            1-> {
+                tvstatusBTItem.text = "PROCESSING"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow_orange))
+            }
+            2-> {
+                tvstatusBTItem.text = "FINISHED"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.green_yellow))
+            }
+            3-> {
+                tvstatusBTItem.text = "COMPLETE"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+            }
+            4-> {
+                tvstatusBTItem.text = "UNFINISHED"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.orange))
+            }
+            5-> {
+                tvstatusBTItem.text = "CANCELLED"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+            }
+        }
         rowView.setOnClickListener {
             val intent = Intent(context, BtDetailActivity::class.java)
             intent.putExtra("businessTrip", businessTrip)

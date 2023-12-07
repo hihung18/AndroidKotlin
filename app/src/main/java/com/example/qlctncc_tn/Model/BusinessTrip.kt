@@ -14,6 +14,7 @@ data class BusinessTrip (
     var  time_begin_trip: String,
     var  time_end_trip: String,
     var  time_cre_trip: String,
+    var  statusBusinessTrip:Int,
 ): Serializable
 
 

@@ -26,17 +26,48 @@
             </androidx.appcompat.widget.Toolbar>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
-                <ListView
-                    android:id="@+id/lvBusinessTrip"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:footerDividersEnabled="false"
-                    android:dividerHeight="10dp"
-                    android:divider="@android:color/transparent"
-                    android:paddingLeft="10dp" />
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <ListView
+                        android:id="@+id/lvBusinessTrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:footerDividersEnabled="false"
+                        android:dividerHeight="10dp"
+                        android:divider="@android:color/transparent"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="History"
+                    android:textSize="22sp"
+                    android:textStyle="bold|italic"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/xam"
+                    android:layout_marginTop="15dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <ListView
+                        android:id="@+id/lvBusinessTripHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:footerDividersEnabled="false"
+                        android:dividerHeight="10dp"
+                        android:divider="@android:color/transparent"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
             </LinearLayout>
 
 

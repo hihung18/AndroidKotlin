@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     val userInfoLogin = LoginActivity.userInfoLogin
-    var businessTrip: List<BusinessTrip> = ArrayList<BusinessTrip>()
+    var listBusinessTrip: List<BusinessTrip> = ArrayList<BusinessTrip>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -75,11 +75,21 @@ class HomeActivity : AppCompatActivity() {
             .enqueue(object : Callback<List<BusinessTrip>> {
             override fun onResponse(call: Call<List<BusinessTrip>>, response: Response<List<BusinessTrip>>) {
                 if (response.isSuccessful) {
-                    businessTrip = response.body()?: emptyList()
+                    listBusinessTrip = response.body()?: emptyList()
                     println("List BusinessTrip Call API ok")
+                    var listBT: MutableList<BusinessTrip> = mutableListOf()
+                    var listBTHistory: MutableList<BusinessTrip> = mutableListOf()
+                    for (bt in listBusinessTrip){
+                        if (bt.statusBusinessTrip == 0 || bt.statusBusinessTrip == 1)
+                            listBT.add(bt)
+                        else listBTHistory.add(bt)
+                    }
                     val listView = findViewById<ListView>(R.id.lvBusinessTrip)
-                    val adapter = BusinessTripAdapter(this@HomeActivity, businessTrip)
+                    val listViewHistory = findViewById<ListView>(R.id.lvBusinessTripHistory)
+                    val adapter = BusinessTripAdapter(this@HomeActivity, listBT)
+                    val adapterHistory = BusinessTripAdapter(this@HomeActivity, listBTHistory)
                     listView.adapter = adapter
+                    listViewHistory.adapter = adapterHistory
 
                 } else {
                     Toast.makeText(this@HomeActivity, "Call API ERROR", Toast.LENGTH_SHORT).show()

@@ -13,12 +13,12 @@
     >
     <TextView
         android:id="@+id/tvSTT_Rate_item"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:text="1"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="@color/orange"
-        android:gravity="center"
+        android:gravity="top"
         android:textStyle="bold"
         android:layout_gravity="top"
         android:layout_marginTop="10dp"
