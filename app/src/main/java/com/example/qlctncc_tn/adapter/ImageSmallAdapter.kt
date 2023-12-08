@@ -7,12 +7,16 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.qlctncc_tn.R
-class ImageSmallAdapter(private val imageUrls: List<String>) : RecyclerView.Adapter<ImageSmallAdapter.ImageViewHolder>() {
+
+class ImageSmallAdapter(private val imageUrls: List<String>) :
+    RecyclerView.Adapter<ImageSmallAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_item_small, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.image_item_small, parent, false)
         return ImageViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val imageUrl = imageUrls[position]
 
@@ -21,6 +25,7 @@ class ImageSmallAdapter(private val imageUrls: List<String>) : RecyclerView.Adap
             .centerCrop()
             .into(holder.imageView)
     }
+
     override fun getItemCount(): Int {
         return imageUrls.size
     }

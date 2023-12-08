@@ -5,25 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.qlctncc_tn.Model.Rate
 import com.example.qlctncc_tn.Model.Report
-import com.example.qlctncc_tn.Model.UserDetail
 import com.example.qlctncc_tn.R
-import com.example.qlctncc_tn.Retrofit.RetrofitClient
-import com.example.qlctncc_tn.activity.BtDetailActivity
 import com.example.qlctncc_tn.activity.HomeActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReportAdapter (private val context: Context, private val listReport: List<Report>) :
+class ReportAdapter(private val context: Context, private val listReport: List<Report>) :
     ArrayAdapter<Report>(context, R.layout.list_item_report, listReport) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -37,13 +28,13 @@ class ReportAdapter (private val context: Context, private val listReport: List<
         val tvdateReport_cre_item = rowView.findViewById<TextView>(R.id.tvdateReport_cre_item)
         val rvImageRpItem = rowView.findViewById<RecyclerView>(R.id.rvImageRpItem)
         // set
-        tvSTT_Report_item.text = (position+1).toString()
-        tvReport_detail_item.text= reportPosition.report_detail
-        tvdateReport_cre_item.text ="Ngày tạo: "+convertDateFormat(reportPosition.time_cre_rp)
+        tvSTT_Report_item.text = (position + 1).toString()
+        tvReport_detail_item.text = reportPosition.report_detail
+        tvdateReport_cre_item.text = "Ngày tạo: " + convertDateFormat(reportPosition.time_cre_rp)
 
-        for (user in HomeActivity.listAllUser){
-            if (user.userId == reportPosition.userID){
-                if (user.fullName ==""){
+        for (user in HomeActivity.listAllUser) {
+            if (user.userId == reportPosition.userID) {
+                if (user.fullName == "") {
                     tvUserReport_item.text = user.username
                     break
                 }
@@ -58,6 +49,7 @@ class ReportAdapter (private val context: Context, private val listReport: List<
         rvImageRpItem.adapter = adapterReImage
         return rowView
     }
+
     private fun convertDateFormat(inputDate: String): String {
         val cutString = inputDate.take(10)
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

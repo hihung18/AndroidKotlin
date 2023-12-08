@@ -33,14 +33,14 @@ class RateAdapter(private val context: Context, private val listRate: List<Rate>
 //            if (user.userId == ratePosition.userID && user.roleName == "ROLE_NV")
 //                lnRate.setBackgroundColor(R.drawable.bg_rate_user)
 //        }
-        tvSTT_Rate_item.text = (position+1).toString()
+        tvSTT_Rate_item.text = (position + 1).toString()
         tvRate_comment_item.text = ratePosition.commentRate
-        tvdateRate_cre_item.text = "Ngày tạo: "+convertDateFormat(ratePosition.time_cre_rate)
+        tvdateRate_cre_item.text = "Ngày tạo: " + convertDateFormat(ratePosition.time_cre_rate)
 
 
-        for (user in HomeActivity.listAllUser){
-            if (user.userId == ratePosition.userID){
-                if (user.fullName ==""){
+        for (user in HomeActivity.listAllUser) {
+            if (user.userId == ratePosition.userID) {
+                if (user.fullName == "") {
                     tvUserRate_item.text = user.username
                     break
                 }
@@ -50,6 +50,7 @@ class RateAdapter(private val context: Context, private val listRate: List<Rate>
         }
         return rowView
     }
+
     private fun convertDateFormat(inputDate: String): String {
         val cutString = inputDate.take(10)
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

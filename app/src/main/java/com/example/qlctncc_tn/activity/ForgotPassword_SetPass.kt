@@ -28,7 +28,7 @@ import java.io.IOException
 class ForgotPassword_SetPass : AppCompatActivity() {
     private lateinit var btnEnterNewPassword: Button
     private lateinit var txtEnterNewPassword: EditText
-    private lateinit var txtEnterReNewPassword:EditText
+    private lateinit var txtEnterReNewPassword: EditText
     private lateinit var btnPrevious: ImageButton
     private var passwordVisible = false
     private var rePasswordVisible = false
@@ -40,36 +40,59 @@ class ForgotPassword_SetPass : AppCompatActivity() {
         addControls()
         addEvents()
     }
+
     private fun addEvents() {
         btnEnterNewPassword.setOnClickListener(View.OnClickListener {
             val newPassword = txtEnterNewPassword.text.trim().toString()
             val reNewPassword = txtEnterReNewPassword.text.trim().toString()
             if (newPassword.length == 0) {
                 val dialog = Dialog(this@ForgotPassword_SetPass)
-                val showDialog = ShowDialog(dialog, false, "Please enter a new password!", this@ForgotPassword_SetPass
-                    ,LoginActivity::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog,
+                    false,
+                    "Please enter a new password!",
+                    this@ForgotPassword_SetPass,
+                    LoginActivity::class.java,
+                    true
+                )
                 return@OnClickListener
             } else if (newPassword.length < 6) {
                 val dialog = Dialog(this@ForgotPassword_SetPass)
-                val showDialog = ShowDialog(dialog, false, "Password needs 6 or more characters.", this@ForgotPassword_SetPass
-                    , LoginActivity::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog,
+                    false,
+                    "Password needs 6 or more characters.",
+                    this@ForgotPassword_SetPass,
+                    LoginActivity::class.java,
+                    true
+                )
                 return@OnClickListener
             } else if (reNewPassword.length == 0) {
                 val dialog = Dialog(this@ForgotPassword_SetPass)
                 val showDialog = ShowDialog(
-                    dialog, false, "Please re-enter new password!", this@ForgotPassword_SetPass
-                    ,LoginActivity::class.java, true
+                    dialog,
+                    false,
+                    "Please re-enter new password!",
+                    this@ForgotPassword_SetPass,
+                    LoginActivity::class.java,
+                    true
                 )
                 return@OnClickListener
             } else if (newPassword == reNewPassword == false) {
                 val dialog = Dialog(this@ForgotPassword_SetPass)
-                val showDialog = ShowDialog(dialog, false, "Hai mật khẩu không giống nhau! Vui lòng nhập lại.", this@ForgotPassword_SetPass
-                    ,LoginActivity::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog,
+                    false,
+                    "Hai mật khẩu không giống nhau! Vui lòng nhập lại.",
+                    this@ForgotPassword_SetPass,
+                    LoginActivity::class.java,
+                    true
+                )
                 return@OnClickListener
             }
             handleLoginApi()
         })
-        btnPrevious.setOnClickListener(){
+        btnPrevious.setOnClickListener() {
             onBackPressed()
         }
 
@@ -80,12 +103,24 @@ class ForgotPassword_SetPass : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 if (motionEvent.rawX >= txtEnterNewPassword.right - txtEnterNewPassword.compoundDrawables[Right].bounds.width()) {
                     if (passwordVisible) {
-                        txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.show_password, 0)
-                        txtEnterNewPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.show_password,
+                            0
+                        )
+                        txtEnterNewPassword.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
                         passwordVisible = false
                     } else {
-                        txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.hide_password, 0)
-                        txtEnterNewPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        txtEnterNewPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.hide_password,
+                            0
+                        )
+                        txtEnterNewPassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         passwordVisible = true
                     }
                 }
@@ -99,12 +134,24 @@ class ForgotPassword_SetPass : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 if (motionEvent.rawX >= txtEnterReNewPassword.right - txtEnterReNewPassword.compoundDrawables[Right].bounds.width()) {
                     if (rePasswordVisible) {
-                        txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.show_password, 0)
-                        txtEnterReNewPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.show_password,
+                            0
+                        )
+                        txtEnterReNewPassword.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
                         rePasswordVisible = false
                     } else {
-                        txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.hide_password, 0)
-                        txtEnterReNewPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        txtEnterReNewPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.hide_password,
+                            0
+                        )
+                        txtEnterReNewPassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         rePasswordVisible = true
                     }
                 }
@@ -118,14 +165,26 @@ class ForgotPassword_SetPass : AppCompatActivity() {
         val password = txtEnterNewPassword.text.toString().trim()
         if (email.length == 0) {
             val dialog = Dialog(this@ForgotPassword_SetPass)
-            val showDialog = ShowDialog(dialog, false, "Email entered is not valid!\nPlease go back to entering your email address!",
-                this@ForgotPassword_SetPass, LoginActivity::class.java, true)
+            val showDialog = ShowDialog(
+                dialog,
+                false,
+                "Email entered is not valid!\nPlease go back to entering your email address!",
+                this@ForgotPassword_SetPass,
+                LoginActivity::class.java,
+                true
+            )
             return
         }
         if (!email.contains("@gmail.com")) {
             val dialog = Dialog(this@ForgotPassword_SetPass)
-            val showDialog = ShowDialog(dialog, false, "Email entered is not valid!\nPlease go back to entering your email address!",
-                this@ForgotPassword_SetPass, LoginActivity::class.java, true)
+            val showDialog = ShowDialog(
+                dialog,
+                false,
+                "Email entered is not valid!\nPlease go back to entering your email address!",
+                this@ForgotPassword_SetPass,
+                LoginActivity::class.java,
+                true
+            )
             return
         }
         val loadingDialog = LoadingDialog(this@ForgotPassword_SetPass)
@@ -133,39 +192,53 @@ class ForgotPassword_SetPass : AppCompatActivity() {
         Log.e("email", email)
         Log.e("txtPassword", password)
         val changePassword = ChangePassword(email, password)
-        RetrofitClient.apiService.postChangePassByEmail(changePassword)?.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                if (response.isSuccessful) {
-                    if (response.code() == 200) {
-                        val dialog = Dialog(this@ForgotPassword_SetPass)
-                        val showDialog = ShowDialog(dialog, true, "Password change successful!",
-                            this@ForgotPassword_SetPass, LoginActivity::class.java, true)
+        RetrofitClient.apiService.postChangePassByEmail(changePassword)
+            ?.enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.code() == 200) {
+                            val dialog = Dialog(this@ForgotPassword_SetPass)
+                            val showDialog = ShowDialog(
+                                dialog, true, "Password change successful!",
+                                this@ForgotPassword_SetPass, LoginActivity::class.java, true
+                            )
+                        }
+                    } else {
+                        try {
+                            var strResponseBody = ""
+                            strResponseBody = response.errorBody()!!.string()
+                            val messageObject = JSONObject(strResponseBody)
+                            val dialog = Dialog(this@ForgotPassword_SetPass)
+                            val showDialog = ShowDialog(
+                                dialog,
+                                false,
+                                """ Password change failed! ${messageObject["message"]} """.trim(),
+                                this@ForgotPassword_SetPass,
+                                LoginActivity::class.java,
+                                true
+                            )
+                            Log.v("Error code 400", response.errorBody()!!.string())
+                        } catch (e: IOException) {
+                            throw RuntimeException(e)
+                        } catch (e: JSONException) {
+                            throw RuntimeException(e)
+                        }
                     }
-                } else {
-                    try {
-                        var strResponseBody = ""
-                        strResponseBody = response.errorBody()!!.string()
-                        val messageObject = JSONObject(strResponseBody)
-                        val dialog = Dialog(this@ForgotPassword_SetPass)
-                        val showDialog = ShowDialog(dialog, false, """ Password change failed! ${messageObject["message"]} """.trim(), this@ForgotPassword_SetPass, LoginActivity::class.java, true)
-                        Log.v("Error code 400", response.errorBody()!!.string())
-                    } catch (e: IOException) {
-                        throw RuntimeException(e)
-                    } catch (e: JSONException) {
-                        throw RuntimeException(e)
-                    }
+                    loadingDialog.closeLoadingDialog()
                 }
-                loadingDialog.closeLoadingDialog()
-            }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                val dialog = Dialog(this@ForgotPassword_SetPass)
-                loadingDialog.closeLoadingDialog()
-                val showDialog = ShowDialog(dialog, false, "Connection errors! Please try again later",
-                    this@ForgotPassword_SetPass, LoginActivity::class.java, true
-                )
-            }
-        })
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    val dialog = Dialog(this@ForgotPassword_SetPass)
+                    loadingDialog.closeLoadingDialog()
+                    val showDialog = ShowDialog(
+                        dialog, false, "Connection errors! Please try again later",
+                        this@ForgotPassword_SetPass, LoginActivity::class.java, true
+                    )
+                }
+            })
     }
 
     private fun addControls() {

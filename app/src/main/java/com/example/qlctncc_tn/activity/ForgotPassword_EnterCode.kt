@@ -25,25 +25,34 @@ class ForgotPassword_EnterCode : AppCompatActivity() {
         addControl();
         addEvent();
     }
+
     private fun addEvent() {
         btnEnterCode.setOnClickListener(View.OnClickListener {
             val code = txtEnterCode.text.toString().trim().lowercase()
             if (code.length == 0) {
                 val dialog = Dialog(this@ForgotPassword_EnterCode)
-                val showDialog = ShowDialog(dialog, false, "Please enter the verification code!",
-                    this@ForgotPassword_EnterCode, ForgotPassword_SetPass::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog, false, "Please enter the verification code!",
+                    this@ForgotPassword_EnterCode, ForgotPassword_SetPass::class.java, true
+                )
                 return@OnClickListener
             }
             if (code != String.valueOf(ForgotPassword_EnterEmail.otpCode) || code.length < 6) {
                 val dialog = Dialog(this@ForgotPassword_EnterCode)
-                val showDialog = ShowDialog(dialog, false, "Verification code is incorrect, please check again or get a new OTP!",
-                    this@ForgotPassword_EnterCode, ForgotPassword_SetPass::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog,
+                    false,
+                    "Verification code is incorrect, please check again or get a new OTP!",
+                    this@ForgotPassword_EnterCode,
+                    ForgotPassword_SetPass::class.java,
+                    true
+                )
                 return@OnClickListener
             }
             val intent = Intent(this@ForgotPassword_EnterCode, ForgotPassword_SetPass::class.java)
             startActivity(intent)
         })
-        btnPrevious.setOnClickListener(){
+        btnPrevious.setOnClickListener() {
             onBackPressed()
         }
     }
@@ -53,12 +62,4 @@ class ForgotPassword_EnterCode : AppCompatActivity() {
         txtEnterCode = findViewById(R.id.txtEnterCode)
         btnPrevious = findViewById(R.id.btnPreviousfp2)
     }
-    override fun onStart() {
-
-        super.onStart()
-    }
-    override fun onStop() {
-        super.onStop()
-    }
-
 }

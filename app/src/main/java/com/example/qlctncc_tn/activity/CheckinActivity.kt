@@ -10,11 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.example.qlctncc_tn.Model.Image
@@ -27,9 +25,7 @@ import com.google.firebase.storage.storage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,12 +36,14 @@ class CheckinActivity : AppCompatActivity() {
     lateinit var btnTakePhoto: Button
     lateinit var btnCheckin: Button
     lateinit var ivPhotoCheckin: ImageView
-    lateinit var currentPhotoPath : String
-    var listImageUrl:MutableList<String> = mutableListOf()
-    var taskPosition:Task?=null
-    companion object{
+    lateinit var currentPhotoPath: String
+    var listImageUrl: MutableList<String> = mutableListOf()
+    var taskPosition: Task? = null
+
+    companion object {
         val REQUEST_IMAGE_CAPTURE = 1
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkin)
@@ -70,7 +68,7 @@ class CheckinActivity : AppCompatActivity() {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
         }
-        btnCheckin.setOnClickListener(){
+        btnCheckin.setOnClickListener() {
             var detail = "CHECK-IN: " + taskPosition!!.nameTask
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
@@ -81,23 +79,31 @@ class CheckinActivity : AppCompatActivity() {
                 BtDetailActivity.businessTrip!!.businessTripId,
                 detail,
                 formattedDate,
-                listImageUrl)
+                listImageUrl
+            )
             postReport(reportNew)
 
         }
+        btnPrevious.setOnClickListener() {
+            onBackPressed()
+        }
     }
+
     private fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
             .apply { currentPhotoPath = absolutePath }
     }
+
     private fun setControls() {
         btnCheckin = findViewById(R.id.btnCheckin)
         btnTakePhoto = findViewById(R.id.btnTakePhoto)
         btnPrevious = findViewById(R.id.btnPreviousCheckinActivity)
         ivPhotoCheckin = findViewById(R.id.ivPhotoCheckin)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -113,45 +119,47 @@ class CheckinActivity : AppCompatActivity() {
                         .load(imageUrl)
                         .centerCrop()
                         .into(ivPhotoCheckin)
-                    Toast.makeText(this@CheckinActivity, "Upload Image Success", Toast.LENGTH_SHORT).show()
+                    print("SUCCESS")
                 }
             }.addOnFailureListener { e ->
-                Toast.makeText(this@CheckinActivity, "Upload Image ERROR", Toast.LENGTH_SHORT).show()
+                print("ERROR")
             }
         }
     }
-    private fun postReport(reportNew: Report){
-        RetrofitClient.apiService.postReport(reportNew,LoginActivity.userInfoLogin!!.token)
+
+    private fun postReport(reportNew: Report) {
+        RetrofitClient.apiService.postReport(reportNew, LoginActivity.userInfoLogin!!.token)
             .enqueue(object : Callback<Report> {
                 override fun onResponse(call: Call<Report>, response: Response<Report>) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         val rp = response.body()
-                        var imageNew = Image(0,"",rp!!.reportId)
-                        for (url in listImageUrl){
+                        var imageNew = Image(0, "", rp!!.reportId)
+                        for (url in listImageUrl) {
                             imageNew.imageUrl = url
                             postImage(imageNew)
                             taskPosition!!.statusCheckIn = 1
                             putTask(taskPosition!!.taskId, taskPosition!!)
                         }
-                        Toast.makeText(this@CheckinActivity, "Add Report Success!", Toast.LENGTH_SHORT).show()
                         println("Post Report is successful")
-                    }else {
+                    } else {
                         println("Post Report is ERROR")
 
                     }
                 }
+
                 override fun onFailure(call: Call<Report>, t: Throwable) {
                     println("Post Report is ERROR" + t)
                 }
             })
     }
-    private fun postImage(image: Image){
-        RetrofitClient.apiService.postImage(image,LoginActivity.userInfoLogin!!.token)
+
+    private fun postImage(image: Image) {
+        RetrofitClient.apiService.postImage(image, LoginActivity.userInfoLogin!!.token)
             .enqueue(object : Callback<Image> {
                 override fun onResponse(call: Call<Image>, response: Response<Image>) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         println("POST Image is successful")
-                    }else {
+                    } else {
                         println("Post Image is ERROR")
                     }
                 }
@@ -161,23 +169,24 @@ class CheckinActivity : AppCompatActivity() {
             })
     }
 
-    private fun putTask(taskID:Int, taskPut:Task){
-        println("taskPut" +taskPut)
-        RetrofitClient.apiService.putTask(taskID,taskPut, LoginActivity.userInfoLogin!!.token)
-            .enqueue(object : Callback<Task>{
+    private fun putTask(taskID: Int, taskPut: Task) {
+        println("taskPut" + taskPut)
+        RetrofitClient.apiService.putTask(taskID, taskPut, LoginActivity.userInfoLogin!!.token)
+            .enqueue(object : Callback<Task> {
                 override fun onResponse(call: Call<Task>, response: Response<Task>) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         val taskR = response.body()
-                        println("taskR" +taskR)
+                        println("taskR" + taskR)
                         println("PutTask checkin Call API SuccessFull ")
                         val resultIntent = Intent()
                         resultIntent.putExtra("taskDataPut", taskR)
                         setResult(Activity.RESULT_OK, resultIntent)
                         finish()
-                    }else {
+                    } else {
                         println("PutTask checkin Call API ERROR ")
                     }
                 }
+
                 override fun onFailure(call: Call<Task>, t: Throwable) {
                     println("PutTask checkin Call API ERROR " + t)
                 }

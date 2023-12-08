@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/input_login"
     android:layout_margin="16dp"
+    android:background="@drawable/input_login"
     android:orientation="vertical">
 
     <TextView
@@ -20,15 +20,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/txtDialogContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="Incorrect account or password!"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -44,16 +44,16 @@
             android:id="@+id/btnDialogOke"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/input_button"
-            android:text="Agree"
-            android:textSize="18sp"
-            android:paddingStart="20sp"
-            android:paddingEnd="20sp"
-            android:paddingTop="10sp"
-            android:paddingBottom="10sp"
-            android:textStyle="bold"
             android:layout_gravity="center"
-            android:textColor="@color/orange" />
+            android:background="@drawable/input_button"
+            android:paddingStart="20sp"
+            android:paddingTop="10sp"
+            android:paddingEnd="20sp"
+            android:paddingBottom="10sp"
+            android:text="Agree"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -31,19 +31,24 @@ interface ApiService {
     fun getListTaskbyBusinessTripID(@Query("businessTripID") businessTripID: Int): Call<List<Task>>
 
     @PUT("tasks/{taskId}")
-    fun putTask(@Path("taskId") taskId: Int,
-                @Body updatedTask: Task,
-                @Header("Authorization") token:String): Call<Task>
+    fun putTask(
+        @Path("taskId") taskId: Int,
+        @Body updatedTask: Task,
+        @Header("Authorization") token: String
+    ): Call<Task>
+
     @GET("rates")
     fun getListRatebyBusinessTripID(@Query("businessTripID") businessTripID: Int): Call<List<Rate>>
 
     @POST("rates")
-    fun postRate(@Body rate: Rate, @Header("Authorization") token:String): Call<Rate>
+    fun postRate(@Body rate: Rate, @Header("Authorization") token: String): Call<Rate>
 
     @PUT("rates/{rateID}")
-    fun putRate(@Path("rateID") rateID: Int,
-                @Body updatedRate: Rate,
-                @Header("Authorization") token:String): Call<Rate>
+    fun putRate(
+        @Path("rateID") rateID: Int,
+        @Body updatedRate: Rate,
+        @Header("Authorization") token: String
+    ): Call<Rate>
 
     @GET("reports")
     fun getListReportbyBusinessTripID(@Query("businessTripID") businessTripID: Int): Call<List<Report>>
@@ -52,12 +57,15 @@ interface ApiService {
     fun getAllUSer(): Call<List<UserDetail>>
 
     @PUT("users/{userId}")
-    fun putUserDetail(@Path("userId") userId: Int,
-                @Body userDetail: UserDetail,
-                @Header("Authorization") token:String): Call<UserDetail>
+    fun putUserDetail(
+        @Path("userId") userId: Int,
+        @Body userDetail: UserDetail,
+        @Header("Authorization") token: String
+    ): Call<UserDetail>
 
     @POST("reports")
-    fun postReport(@Body report: Report, @Header("Authorization") token:String): Call<Report>
+    fun postReport(@Body report: Report, @Header("Authorization") token: String): Call<Report>
+
     @POST("images")
-    fun postImage(@Body image: Image, @Header("Authorization") token:String): Call<Image>
+    fun postImage(@Body image: Image, @Header("Authorization") token: String): Call<Image>
 }

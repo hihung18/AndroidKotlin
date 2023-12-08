@@ -120,8 +120,8 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             val builder = AlertDialog.Builder(context)
             builder.setMessage("You definitely confirm the task?")
             builder.setPositiveButton("Yes") { dialog, id ->
-                taskPosition.statusConfirm=1
-                putTask(taskPosition.taskId,taskPosition)
+                taskPosition.statusConfirm = 1
+                putTask(taskPosition.taskId, taskPosition)
                 notifyDataSetChanged()
             }
             builder.setNegativeButton(

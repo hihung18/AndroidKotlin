@@ -32,8 +32,6 @@ class BusinessTripAdapter(private val context: Context, private val businessTrip
         tvSttBtItem.text = (position+1).toString()
         tvNameBtItem.text = businessTrip.name_trip
         tvDateBtItem.text = convertDateFormat(businessTrip.time_begin_trip) + " - "+ convertDateFormat(businessTrip.time_end_trip)
-
-
         when (businessTrip.statusBusinessTrip){
             0-> {tvstatusBTItem.text = "PREPARING"
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow))

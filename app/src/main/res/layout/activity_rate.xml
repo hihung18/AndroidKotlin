@@ -4,29 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background"
+    android:orientation="vertical"
     tools:context=".activity.RateActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/background_toolbar"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/background_toolbar"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/btnPreviousRate"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/btnPreviousRate"
             android:src="@drawable/baseline_arrow_back_24"
             app:tint="@color/orange" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="60"
             android:layout_gravity="center"
+            android:layout_weight="60"
             android:gravity="center"
             android:text="Rate"
             android:textColor="@color/orange"
@@ -49,53 +50,58 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <EditText
             android:id="@+id/edtCommentRate"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_margin="10dp"
             android:background="@drawable/custom_input"
             android:drawablePadding="10dp"
             android:hint="Comment"
-            android:maxLines="1"
             android:inputType="textMultiLine"
+            android:maxLines="1"
             android:padding="5dp"
-            android:layout_margin="10dp"
             android:textColor="@color/orange"
             android:textColorHint="@color/orange_hint"
             android:textSize="16dp"
             android:textStyle="bold" />
+
         <Button
             android:id="@+id/btnSaveRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save"
-            android:layout_margin="5dp"
-            android:backgroundTint="#F6D259"
-            android:textColor="#815454"
-            android:textStyle="bold"
-            android:textSize="20dp"
             android:layout_gravity="center"
-            android:background="@drawable/input_login"/>
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_login"
+            android:backgroundTint="#F6D259"
+            android:text="Save"
+            android:textColor="#815454"
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
+
         <ListView
             android:id="@+id/lvRate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:footerDividersEnabled="false"
-            android:dividerHeight="10dp"
             android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:footerDividersEnabled="false"
             android:paddingLeft="10dp" />
     </LinearLayout>
 

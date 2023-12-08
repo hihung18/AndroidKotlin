@@ -8,11 +8,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.qlctncc_tn.Model.*
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
-import com.example.qlctncc_tn.adapter.BusinessTripAdapter
 import com.example.qlctncc_tn.adapter.TaskAdapter
 import com.example.qlctncc_tn.adapter.TaskAdapterListener
 import retrofit2.Call
@@ -32,31 +30,29 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
     lateinit var tvDateEndBT_detail: TextView
     lateinit var tvDateCreateBT_detail: TextView
     lateinit var tvLinkGoogleMap: TextView
-    lateinit var btnRate:Button
-    lateinit var btnReport:Button
+    lateinit var btnRate: Button
+    lateinit var btnReport: Button
     lateinit var btnPrevious: ImageButton
     val REQUEST_CODE_ACTIVITY_CHECKIN = 123
     val REQUEST_CODE_ACTIVITY_RESUFE = 234
 
-    companion object{
+    companion object {
         var businessTrip: BusinessTrip? = null
     }
+
     var nameManager: String? = null
     var namePartner: String? = null
-    var listTask:MutableList<Task> = mutableListOf()
-    var adapter : TaskAdapter? = null
+    var listTask: MutableList<Task> = mutableListOf()
+    var adapter: TaskAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bt_detail)
         businessTrip = intent.getSerializableExtra("businessTrip") as BusinessTrip
-//        managerID = intent.getIntExtra("managerID",-1)
-//        partnerID = intent.getIntExtra("partnerID",-1)
         getPartnerByID(businessTrip!!.partnerID)
         setControl()
         setEvent()
     }
-
 
 
     private fun setEvent() {
@@ -70,17 +66,17 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         tvPartner_detail.text = namePartner
         tvManagerBT_detail.text = nameManager
 
-        btnRate.setOnClickListener(){
+        btnRate.setOnClickListener() {
             val intent = Intent(applicationContext, RateActivity::class.java)
             intent.putExtra("businessTripID", businessTrip?.businessTripId)
             startActivity(intent)
         }
-        btnReport.setOnClickListener(){
+        btnReport.setOnClickListener() {
             val intent = Intent(applicationContext, ReportActivity::class.java)
             intent.putExtra("businessTripID", businessTrip?.businessTripId)
             startActivity(intent)
         }
-        btnPrevious.setOnClickListener(){
+        btnPrevious.setOnClickListener() {
             onBackPressed()
         }
     }
@@ -100,6 +96,7 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         btnReport = findViewById(R.id.btnReport)
 
     }
+
     private fun convertDateFormat(inputDate: String): String {
         val cutString = inputDate.take(10)
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -107,7 +104,8 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         val date: Date = inputFormat.parse(cutString) ?: Date()
         return outputFormat.format(date)
     }
-    private fun getPartnerByID(partnerID : Int) {
+
+    private fun getPartnerByID(partnerID: Int) {
         RetrofitClient.apiService.getPartnerByID(partnerID)
             .enqueue(object : Callback<Partner> {
                 override fun onResponse(call: Call<Partner>, response: Response<Partner>) {
@@ -117,17 +115,18 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
                         namePartner = partner?.name_pn
                         getNameManagerByID(businessTrip!!.managerID)
                     } else {
-                        Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+
                         println("getPartner by ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<Partner>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "getPartner by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+
                     println("getPartner by ID Call API ERROR ")
                 }
             })
     }
-    private fun getNameManagerByID(managerID : Int) {
+
+    private fun getNameManagerByID(managerID: Int) {
         RetrofitClient.apiService.getUserDetailByID(managerID)
             .enqueue(object : Callback<UserDetail> {
                 override fun onResponse(call: Call<UserDetail>, response: Response<UserDetail>) {
@@ -136,37 +135,40 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
                         nameManager = userDetail?.fullName
                         getListTaskbyBusinessTripID(businessTrip!!.businessTripId)
                     } else {
-                        Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+
                         println("getName Manager by ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<UserDetail>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "getName Manager by ID Call API ERROR", Toast.LENGTH_SHORT).show()
+
                     println("getName Manager by ID Call API ERROR ")
                 }
             })
     }
-    private fun getListTaskbyBusinessTripID(businessTripID: Int){
+
+    private fun getListTaskbyBusinessTripID(businessTripID: Int) {
         RetrofitClient.apiService.getListTaskbyBusinessTripID(businessTripID)
-            .enqueue(object : Callback<List<Task>>{
+            .enqueue(object : Callback<List<Task>> {
                 override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         listTask = response.body() as MutableList<Task>
                         val listView = findViewById<ListView>(R.id.lvTaskBT)
                         setEvent()
-                        if (listTask.isNotEmpty()){
-                            adapter = TaskAdapter(this@BtDetailActivity, listTask,this@BtDetailActivity)
-                        }else {
-                            adapter = TaskAdapter(this@BtDetailActivity, emptyList(),this@BtDetailActivity)
+                        if (listTask.isNotEmpty()) {
+                            adapter =
+                                TaskAdapter(this@BtDetailActivity, listTask, this@BtDetailActivity)
+                        } else {
+                            adapter = TaskAdapter(this@BtDetailActivity, emptyList(), this@BtDetailActivity
+                            )
                         }
                         listView.adapter = adapter
-                    }else {
-                        Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API ERROR", Toast.LENGTH_SHORT).show()
+                    } else {
+
                         println("get List Task by business ID Call API ERROR ")
                     }
                 }
                 override fun onFailure(call: Call<List<Task>>, t: Throwable) {
-                    Toast.makeText(this@BtDetailActivity, "get List Task by business ID Call API ERROR", Toast.LENGTH_SHORT).show()
+
                     println("get List Task by business ID Call API ERROR ")
                 }
             })
@@ -179,18 +181,19 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         startActivityForResult(intent, REQUEST_CODE_ACTIVITY_RESUFE)
     }
 
-    override fun onCheckinClicked(taskPosition:Task) {
+    override fun onCheckinClicked(taskPosition: Task) {
         val intent = Intent(this, CheckinActivity::class.java)
         intent.putExtra("taskPosition", taskPosition)
         startActivityForResult(intent, REQUEST_CODE_ACTIVITY_CHECKIN)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_ACTIVITY_CHECKIN || requestCode == REQUEST_CODE_ACTIVITY_RESUFE) {
             if (resultCode == Activity.RESULT_OK) {
                 val taskDataPut = data?.getSerializableExtra("taskDataPut") as Task
-                listTask.forEach{task ->
-                    if (task.taskId == taskDataPut.taskId){
+                listTask.forEach { task ->
+                    if (task.taskId == taskDataPut.taskId) {
                         task.statusCheckIn = taskDataPut.statusCheckIn
                     }
                 }
@@ -198,4 +201,5 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
             }
         }
     }
+
 }

@@ -63,7 +63,14 @@ class SignupActivity : AppCompatActivity() {
 
             if (username.isEmpty()) {
                 val dialog = Dialog(this@SignupActivity)
-                val showDialog = ShowDialog(dialog, false, "Please enter username", this@SignupActivity, LoginActivity::class.java, true)
+                val showDialog = ShowDialog(
+                    dialog,
+                    false,
+                    "Please enter username",
+                    this@SignupActivity,
+                    LoginActivity::class.java,
+                    true
+                )
                 return@setOnClickListener
             }
             if (email.isEmpty()) {
@@ -121,12 +128,24 @@ class SignupActivity : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 if (motionEvent.rawX >= txtPassword.right - txtPassword.compoundDrawables[Right].bounds.width()) {
                     if (passwordVisible) {
-                        txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0)
-                        txtPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        txtPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.user_password,
+                            0,
+                            R.drawable.show_password,
+                            0
+                        )
+                        txtPassword.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
                         passwordVisible = false
                     } else {
-                        txtPassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0)
-                        txtPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        txtPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.user_password,
+                            0,
+                            R.drawable.hide_password,
+                            0
+                        )
+                        txtPassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         passwordVisible = true
                     }
                 }
@@ -139,13 +158,21 @@ class SignupActivity : AppCompatActivity() {
             if (motionEvent.action == MotionEvent.ACTION_UP) {
                 if (motionEvent.rawX >= txtRePassword.right - txtRePassword.compoundDrawables[Right].bounds.width()) {
                     if (rePasswordVisible) {
-                        txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.show_password, 0
+                        txtRePassword.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.user_password, 0, R.drawable.show_password, 0
                         )
-                        txtRePassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        txtRePassword.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
                         rePasswordVisible = false
                     } else {
-                        txtRePassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user_password, 0, R.drawable.hide_password, 0)
-                        txtRePassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        txtRePassword.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.user_password,
+                            0,
+                            R.drawable.hide_password,
+                            0
+                        )
+                        txtRePassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         rePasswordVisible = true
                     }
                 }
@@ -181,22 +208,43 @@ class SignupActivity : AppCompatActivity() {
         val uFullname = txtFullName.text.toString()
         val uPhoneNum = txtPhoneNumber.text.toString()
         val uAddress = txtAddress.text.toString()
-        val userapi = UserSignup(0, uEmail, uUsername, uPassword, uFullname, uPhoneNum, uAddress, "ROLE_NV")
-        RetrofitClient.apiService.postSignUp(userapi).enqueue(object : Callback<User>{
+        val userapi = UserSignup(
+            0,
+            uEmail,
+            uUsername,
+            uPassword,
+            uFullname,
+            uPhoneNum,
+            uAddress,
+            "",
+            "ROLE_NV"
+        )
+        RetrofitClient.apiService.postSignUp(userapi).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 try {
                     if (response.isSuccessful) {
                         println("Successful account registration!")
                         val dialog = Dialog(this@SignupActivity)
                         val showDialog = ShowDialog(
-                            dialog, true, "Successful account registration!"
-                            , this@SignupActivity,LoginActivity::class.java, true)
+                            dialog,
+                            true,
+                            "Successful account registration!",
+                            this@SignupActivity,
+                            LoginActivity::class.java,
+                            true
+                        )
 
                     } else {
                         println("Account registration failed!")
                         val dialog = Dialog(this@SignupActivity)
-                        val showDialog = ShowDialog(dialog, false, "Account registration failed! "
-                            ,this@SignupActivity, LoginActivity::class.java, true)
+                        val showDialog = ShowDialog(
+                            dialog,
+                            false,
+                            "Account registration failed! ",
+                            this@SignupActivity,
+                            LoginActivity::class.java,
+                            true
+                        )
 
                     }
                 } catch (e: IOException) {
@@ -209,8 +257,12 @@ class SignupActivity : AppCompatActivity() {
                 val dialog = Dialog(this@SignupActivity)
                 loadingDialog.closeLoadingDialog()
                 val showDialog = ShowDialog(
-                    dialog, false, "Connection errors! Please try again later"
-                    , this@SignupActivity,LoginActivity::class.java, true
+                    dialog,
+                    false,
+                    "Connection errors! Please try again later",
+                    this@SignupActivity,
+                    LoginActivity::class.java,
+                    true
                 )
             }
         })

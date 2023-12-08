@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,60 +11,66 @@
         android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarhome"
-                app:title="Home"
-                app:titleTextColor="@color/orange"
-                android:background="@drawable/background_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
-            </androidx.appcompat.widget.Toolbar>
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/background_toolbar"
+                app:title="Home"
+                app:titleTextColor="@color/orange"></androidx.appcompat.widget.Toolbar>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_margin="5dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
+
                     <ListView
                         android:id="@+id/lvBusinessTrip"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:footerDividersEnabled="false"
-                        android:dividerHeight="10dp"
                         android:divider="@android:color/transparent"
+                        android:dividerHeight="10dp"
+                        android:footerDividersEnabled="false"
                         android:paddingLeft="10dp" />
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="History"
-                    android:textSize="22sp"
-                    android:textStyle="bold|italic"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/xam"
                     android:layout_marginTop="15dp"
-                    />
+                    android:paddingLeft="10dp"
+                    android:text="History"
+                    android:textColor="@color/xam"
+                    android:textSize="22sp"
+                    android:textStyle="bold|italic" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
+
                     <ListView
                         android:id="@+id/lvBusinessTripHistory"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:footerDividersEnabled="false"
-                        android:dividerHeight="10dp"
                         android:divider="@android:color/transparent"
+                        android:dividerHeight="10dp"
+                        android:footerDividersEnabled="false"
                         android:paddingLeft="10dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -75,12 +80,11 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/layout_header"
-            app:menu="@menu/menu_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/menu_navigation"></com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background"
+    android:orientation="vertical"
     tools:context=".activity.LoginActivity">
+
     <LinearLayout
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="65dp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <ImageView
             android:layout_width="200dp"
@@ -22,10 +23,10 @@
             app:srcCompat="@drawable/logo" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/txtUsername"
@@ -36,8 +37,8 @@
                 android:drawableStart="@drawable/user_login"
                 android:drawablePadding="10dp"
                 android:hint="Username"
-                android:maxLines="1"
                 android:inputType="text"
+                android:maxLines="1"
                 android:padding="10dp"
                 android:textColor="@color/orange"
                 android:textColorHint="@color/orange_hint"
@@ -47,13 +48,13 @@
             <EditText
                 android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
-                android:inputType="textPassword"
                 android:layout_height="50dp"
                 android:background="@drawable/custom_input"
                 android:drawableLeft="@drawable/user_password"
                 android:drawableRight="@drawable/show_password"
                 android:drawablePadding="10dp"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:padding="10dp"
                 android:textColor="@color/orange"
                 android:textColorHint="@color/orange_hint"
@@ -61,10 +62,10 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/isRemember"
@@ -90,27 +91,27 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnSignIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20sp"
-                    android:paddingEnd="20sp"
-                    android:paddingTop="10sp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="20sp"
+                    android:background="@drawable/input_login"
+                    android:backgroundTint="#fff"
+                    android:paddingStart="20sp"
+                    android:paddingTop="10sp"
+                    android:paddingEnd="20sp"
                     android:paddingBottom="10sp"
                     android:text="SIGNIN"
-                    android:backgroundTint="#fff"
                     android:textColor="#815454"
-                    android:textStyle="bold"
                     android:textSize="24dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/input_login"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/createAccount"

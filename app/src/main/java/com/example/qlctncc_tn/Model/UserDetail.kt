@@ -11,6 +11,7 @@ data class UserDetail (
     var fullName : String,
     var phoneNumber : String,
     var address : String,
+    var tokeDevice : String,
     var roleName : String,
 ): Serializable
 
