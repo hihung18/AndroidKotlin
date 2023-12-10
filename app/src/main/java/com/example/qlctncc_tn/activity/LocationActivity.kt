@@ -42,9 +42,9 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
-        val sydney = LatLng(10.762622, 106.660172)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in HCM"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10f))
+        val hcm = LatLng(10.762622, 106.660172)
+        googleMap.addMarker(MarkerOptions().position(hcm).title("Marker in HCM"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcm, 10f))
     }
 
     fun onGetCurrentLocationButtonClick(view: View) {

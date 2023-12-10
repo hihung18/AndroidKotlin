@@ -248,6 +248,8 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val userDetail = response.body()
                         println("Put UserDetail is successful")
+                        val intent = Intent(applicationContext, HomeActivity::class.java)
+                        startActivity(intent)
                     } else {
                         println("Put UserDetail is ERROR")
                     }

@@ -98,6 +98,9 @@ class ReportActivity : AppCompatActivity() {
             )
             postReport(reportNew)
         }
+        btnPrevious.setOnClickListener(){
+            onBackPressed()
+        }
     }
 
     private fun setControls() {

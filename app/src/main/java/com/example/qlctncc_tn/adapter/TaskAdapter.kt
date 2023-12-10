@@ -29,24 +29,28 @@ interface TaskAdapterListener {
     fun onCheckinClicked(taskPosition:Task)
 }
 class TaskAdapter(private val context: Context, private val listTasks: List<Task>
-,private val listener: TaskAdapterListener) :
+,private val listener: TaskAdapterListener,statusBT: Int) :
     ArrayAdapter<Task>(context, R.layout.list_item_task, listTasks) {
     lateinit var  btnConfirmTask : Button
     lateinit var  btnRefuseTask : Button
+    lateinit var  btnCompleteTask : Button
+    lateinit var  btnCheckinTask : Button
     lateinit var  tvRefused : TextView
+    val statusBusinessTrip = statusBT
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.list_item_task, parent, false)
         var taskPosition = listTasks[position]
         //anh xa
+
         val tvSTT_Task_item = rowView.findViewById<TextView>(R.id.tvSTT_Task_item)
         val tvTask_detail_item = rowView.findViewById<TextView>(R.id.tvTask_detail_item)
         val tvNameTask_item = rowView.findViewById<TextView>(R.id.tvNameTask_item)
         val tvUserTask_item = rowView.findViewById<TextView>(R.id.tvUserTask_item)
         val tvDateTask_cre_item = rowView.findViewById<TextView>(R.id.tvDateTask_cre_item)
         tvRefused = rowView.findViewById(R.id.tvRefused)
-        val btnCompleteTask = rowView.findViewById<Button>(R.id.btnCompleteTask)
-        val btnCheckinTask = rowView.findViewById<Button>(R.id.btnCheckinTask)
+        btnCompleteTask = rowView.findViewById(R.id.btnCompleteTask)
+        btnCheckinTask = rowView.findViewById(R.id.btnCheckinTask)
         btnConfirmTask = rowView.findViewById(R.id.btnConfirmTask)
         btnRefuseTask = rowView.findViewById(R.id.btnRefuseTask)
 
@@ -97,7 +101,7 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             btnCompleteTask.setText("CENSORING")
         }
         btnCompleteTask.setOnClickListener(){
-            if (taskPosition.statusComplete == 2 ||taskPosition.statusComplete == 3) return@setOnClickListener
+            if (taskPosition.statusComplete == 2 ||taskPosition.statusComplete == 3 || (statusBusinessTrip != 0 && statusBusinessTrip != 1)) return@setOnClickListener
             val builder = AlertDialog.Builder(context)
             builder.setMessage("You have definitely completed it?")
             builder.setPositiveButton("Yes") { dialog, id ->
@@ -116,7 +120,7 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             btnConfirmTask.setBackgroundColor(Color.GREEN)
 
         btnConfirmTask.setOnClickListener(){
-            if (taskPosition.statusConfirm == 1) return@setOnClickListener
+            if (taskPosition.statusConfirm == 1 || (statusBusinessTrip != 0 && statusBusinessTrip != 1)) return@setOnClickListener
             val builder = AlertDialog.Builder(context)
             builder.setMessage("You definitely confirm the task?")
             builder.setPositiveButton("Yes") { dialog, id ->
@@ -137,12 +141,15 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             btnCheckinTask.setBackgroundColor(Color.GREEN)
         }
         btnCheckinTask.setOnClickListener {
+            if (taskPosition.statusCheckIn == 1 || (statusBusinessTrip != 0 && statusBusinessTrip != 1)) return@setOnClickListener
             println("click btn")
             listener.onCheckinClicked(taskPosition)
         }
         btnRefuseTask.setOnClickListener(){
+            if (statusBusinessTrip != 0 && statusBusinessTrip != 1) return@setOnClickListener
             listener.onRefuseClicked(taskPosition)
         }
+
         return rowView
     }
     private fun convertDateFormat(inputDate: String): String {

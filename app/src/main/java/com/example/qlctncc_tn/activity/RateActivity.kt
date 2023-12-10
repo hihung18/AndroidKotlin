@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.example.qlctncc_tn.Model.Rate
-import com.example.qlctncc_tn.Model.Report
+import com.example.qlctncc_tn.Model.*
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
 import com.example.qlctncc_tn.Util.ShowDialog
@@ -27,11 +26,15 @@ class RateActivity : AppCompatActivity() {
     lateinit var linerlayoutAdd: LinearLayout
     var adapter: RateAdapter? = null
     var businessTripID: Int? = 0
+    var managerID: Int? = 0
+    var businessTripName: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rate)
         adapter = RateAdapter(this, listRate)
         businessTripID = intent.getIntExtra("businessTripID", -1)
+        businessTripName = intent.getStringExtra("businessTripName")
+        managerID = intent.getIntExtra("managerID", -1)
         setControls()
         getListRatebyBusinessTripID(businessTripID!!)
     }
@@ -89,6 +92,7 @@ class RateActivity : AppCompatActivity() {
                         } else {
                             adapter = RateAdapter(this@RateActivity, emptyList())
                         }
+
                         listView.adapter = adapter
                         setEvent()
                         println("getListRate by businessTripID Call API Successful ")
@@ -111,10 +115,23 @@ class RateActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val rateNew = response.body()
                         if (rateNew != null) {
-                            (listRate as MutableList<Rate>).add(rateNew)
+                            listRate.add(rateNew)
                         }
                         linerlayoutAdd.visibility = View.GONE
                         adapter!!.notifyDataSetChanged()
+                        val lisUserDetial = HomeActivity.listAllUser
+                        var manager:UserDetail? = null
+                        for (user in lisUserDetial){
+                            if (user.userId == managerID) {
+                                manager = user
+                                break
+                            }
+                        }
+                        val notificationFCM = NotificationFCM()
+                        notificationFCM.addToNotification("title", "Hi "+ manager!!.fullName+ " , You have a new Rate")
+                        notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in Trip: "+ businessTripName)
+                        notificationFCM.to = manager!!.tokeDevice
+                        sendNotificationFCM(notificationFCM)
                         println("Post Rate is successful")
                     } else {
                         println("Post Rate is ERROR")
@@ -125,6 +142,27 @@ class RateActivity : AppCompatActivity() {
                     println("Post Rate is ERROR" + t)
                 }
 
+            })
+    }
+    private fun sendNotificationFCM(notificationFCM: NotificationFCM) {
+        val serverKey = "key=AAAAnkR0nsA:APA91bEKaDDItAac3jKQB4xw3Tmmv5Xj9Cw8y08iebT6e0RmFELBg1nx6uUNfEXGDSr7-K1DgdBGoYuF6yTTX8YAx3gc_PPneLMVyPFRdSDI-oFjJbZgchcmNXNZf6-oKb_xX25Vl_96"
+        val contentType = "application/json"
+
+        RetrofitClient.fcm.senNotification(notificationFCM, serverKey, contentType)
+            .enqueue(object : Callback<NotificationFCM> {
+                override fun onResponse(call: Call<NotificationFCM>, response: Response<NotificationFCM>) {
+                    if (response.isSuccessful) {
+                        val noti = response.body()
+                        println(noti)
+                        println("POST Notification is success")
+                    } else {
+                        println("response: " + response)
+                        println("POST Notification is ERRORRRR")
+                    }
+                }
+                override fun onFailure(call: Call<NotificationFCM>, t: Throwable) {
+                    println("POST Notification is ERROR + $t")
+                }
             })
     }
 }

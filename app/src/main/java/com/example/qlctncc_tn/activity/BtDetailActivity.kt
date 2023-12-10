@@ -69,6 +69,8 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         btnRate.setOnClickListener() {
             val intent = Intent(applicationContext, RateActivity::class.java)
             intent.putExtra("businessTripID", businessTrip?.businessTripId)
+            intent.putExtra("businessTripName", businessTrip?.name_trip)
+            intent.putExtra("managerID", businessTrip?.managerID)
             startActivity(intent)
         }
         btnReport.setOnClickListener() {
@@ -156,10 +158,11 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
                         setEvent()
                         if (listTask.isNotEmpty()) {
                             adapter =
-                                TaskAdapter(this@BtDetailActivity, listTask, this@BtDetailActivity)
+                                TaskAdapter(this@BtDetailActivity, listTask, this@BtDetailActivity,
+                                    businessTrip!!.statusBusinessTrip)
                         } else {
                             adapter = TaskAdapter(this@BtDetailActivity, emptyList(), this@BtDetailActivity
-                            )
+                            , businessTrip!!.statusBusinessTrip)
                         }
                         listView.adapter = adapter
                     } else {

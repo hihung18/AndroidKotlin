@@ -68,4 +68,8 @@ interface ApiService {
 
     @POST("images")
     fun postImage(@Body image: Image, @Header("Authorization") token: String): Call<Image>
+
+    @POST("send")
+    fun senNotification(@Body notificationFCM: NotificationFCM, @Header("Authorization") token: String
+                        , @Header("Content-Type") contextType: String): Call<NotificationFCM>
 }

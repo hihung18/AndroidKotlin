@@ -17,6 +17,12 @@ object RetrofitClient {
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+    private val firebasefcm: Retrofit = Retrofit.Builder()
+        .baseUrl("https://fcm.googleapis.com/fcm/")
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     val apiService: ApiService = retrofit.create(ApiService::class.java)
+    val fcm: ApiService = firebasefcm.create(ApiService::class.java)
 }

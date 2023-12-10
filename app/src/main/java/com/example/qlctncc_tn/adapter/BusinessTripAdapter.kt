@@ -16,7 +16,7 @@ import com.example.qlctncc_tn.activity.BtDetailActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BusinessTripAdapter(private val context: Context, private val businessTrips: List<BusinessTrip>) :
+class BusinessTripAdapter(private val context: Context, private val businessTrips: List<BusinessTrip>):
     ArrayAdapter<BusinessTrip>(context, R.layout.list_item_businesstrip, businessTrips) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -60,8 +60,6 @@ class BusinessTripAdapter(private val context: Context, private val businessTrip
         rowView.setOnClickListener {
             val intent = Intent(context, BtDetailActivity::class.java)
             intent.putExtra("businessTrip", businessTrip)
-//            intent.putExtra("managerID", businessTrip.managerID)
-//            intent.putExtra("partnerID", businessTrip.partnerID)
             context.startActivity(intent)
         }
         return rowView
