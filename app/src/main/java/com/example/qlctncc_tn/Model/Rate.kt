@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Rate(
     var rateId: Int,
-    var businessTripID: Int,
+    var taskID: Int,
     var userID: Int,
     var commentRate: String,
     var time_cre_rate: String,

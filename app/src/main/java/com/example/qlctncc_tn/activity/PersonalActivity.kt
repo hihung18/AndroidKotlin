@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import com.example.qlctncc_tn.MainActivity
 import com.example.qlctncc_tn.Model.UserDetail
 import com.example.qlctncc_tn.R
@@ -19,7 +20,7 @@ import retrofit2.Response
 class PersonalActivity : AppCompatActivity() {
     lateinit var btnSave: Button
     lateinit var btnUpdate: Button
-    lateinit var btnPreviousRersonal: Button
+    lateinit var btnPreviousPersonal: ImageButton
     lateinit var edtUserName: EditText
     lateinit var edtEmail: EditText
     lateinit var edtFullname: EditText
@@ -96,14 +97,14 @@ class PersonalActivity : AppCompatActivity() {
             )
             putUserDetail(userDetailNew.userId, userDetailNew)
         }
-        btnPreviousRersonal.setOnClickListener() {
+        btnPreviousPersonal.setOnClickListener() {
             onBackPressed();
         }
     }
 
     private fun setControls() {
         btnSave = findViewById(R.id.btnSaveP)
-        btnPreviousRersonal = findViewById(R.id.btnPreviousRersonal)
+        btnPreviousPersonal = findViewById(R.id.btnPreviousPersonal)
         btnUpdate = findViewById(R.id.btnUpdateP)
         edtUserName = findViewById(R.id.edtUsernameP)
         edtEmail = findViewById(R.id.edtEmailP)

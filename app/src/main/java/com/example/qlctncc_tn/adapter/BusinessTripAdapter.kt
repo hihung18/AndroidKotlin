@@ -49,10 +49,6 @@ class BusinessTripAdapter(private val context: Context, private val businessTrip
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
             }
             4-> {
-                tvstatusBTItem.text = "UNFINISHED"
-                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.orange))
-            }
-            5-> {
                 tvstatusBTItem.text = "CANCELLED"
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
             }

@@ -15,7 +15,15 @@
         android:background="@drawable/background_toolbar"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+        <TextView
+            android:id="@+id/tvdistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_gravity="right" />
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/mapFragment"

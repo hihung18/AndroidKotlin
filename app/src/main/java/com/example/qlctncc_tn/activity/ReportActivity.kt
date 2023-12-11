@@ -45,22 +45,40 @@ class ReportActivity : AppCompatActivity() {
     lateinit var linerlayoutAdd: LinearLayout
     var adapter: ReportAdapter? = null
     var businessTripID: Int? = 0
+    var refuseStatus: Int? = 0
     var checkRefuse = false
+    var checkAdd = false
     var taskPosition: Task? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_report)
-        businessTripID = intent.getIntExtra("businessTripID", -1)
+        if (intent.hasExtra("businessTripID")){
+            businessTripID = intent.getIntExtra("businessTripID", -1)
+            checkAdd = false // xem từ businesstrip Detail
+        }else {
+            checkAdd = true
+        }
         if (intent.hasExtra("taskPosition")) {
+            if (intent.hasExtra("RefuseStatus")){
+                checkRefuse = true // Báo cáo
+                refuseStatus = intent.getIntExtra("RefuseStatus", -1)
+            }
             taskPosition = intent.getSerializableExtra("taskPosition") as? Task
-            if (taskPosition != null) checkRefuse = true
+            if (taskPosition != null) {
+                checkAdd = true// thêm report
+            }
         }
         setControls()
-        getListRatebyBusinessTripID(businessTripID!!)
+        if (!checkAdd) getListRateByBusinessTripID(businessTripID!!)
+        else getListRatebyTaskID(taskPosition!!.taskId)
     }
 
     private fun setEvent() {
+        if (!checkAdd) { // xem từ businesstrip Detail
+            btnAdd.visibility = View.GONE
+        }
         btnAdd.setOnClickListener() {
             linerlayoutAdd.visibility = View.VISIBLE
             reportDetail.text.clear()
@@ -90,8 +108,7 @@ class ReportActivity : AppCompatActivity() {
             val formattedDate = formatter.format(currentDate)
             var reportNew = Report(
                 0,
-                LoginActivity.userInfoLogin!!.id,
-                businessTripID!!,
+                taskPosition!!.taskId,
                 detail,
                 formattedDate,
                 listImageUrl
@@ -119,8 +136,36 @@ class ReportActivity : AppCompatActivity() {
         recyclerView.adapter = adapterReImage
     }
 
-    private fun getListRatebyBusinessTripID(businessTripID: Int) {
+    private fun getListRateByBusinessTripID(businessTripID: Int) {
         RetrofitClient.apiService.getListReportbyBusinessTripID(businessTripID)
+            .enqueue(object : Callback<List<Report>> {
+                override fun onResponse(
+                    call: Call<List<Report>>,
+                    response: Response<List<Report>>
+                ) {
+                    if (response.isSuccessful) {
+                        listReport = response.body() as MutableList<Report>
+                        val listView = findViewById<ListView>(R.id.lvReport)
+                        if (listReport.isNotEmpty()) {
+                            adapter = ReportAdapter(this@ReportActivity, listReport)
+                        } else {
+                            adapter = ReportAdapter(this@ReportActivity, emptyList())
+                        }
+                        listView.adapter = adapter
+                        setEvent()
+                        println("getReport by businessTripID Call API Successful ")
+                    } else {
+                        println("getReport by businessTripID Call API ERROR ")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Report>>, t: Throwable) {
+                    println("getReport by businessTripID Call API ERROR " + t)
+                }
+            })
+    }
+    private fun getListRatebyTaskID(taskID: Int) {
+        RetrofitClient.apiService.getListReportbyTaskID(taskID)
             .enqueue(object : Callback<List<Report>> {
                 override fun onResponse(
                     call: Call<List<Report>>,

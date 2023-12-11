@@ -29,20 +29,20 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
     lateinit var tvDateBeginBT_detail: TextView
     lateinit var tvDateEndBT_detail: TextView
     lateinit var tvDateCreateBT_detail: TextView
-    lateinit var tvLinkGoogleMap: TextView
     lateinit var btnRate: Button
     lateinit var btnReport: Button
     lateinit var btnPrevious: ImageButton
+    lateinit var btnMapBTdetial: ImageButton
     val REQUEST_CODE_ACTIVITY_CHECKIN = 123
     val REQUEST_CODE_ACTIVITY_RESUFE = 234
 
     companion object {
         var businessTrip: BusinessTrip? = null
+        var listTask: MutableList<Task> = mutableListOf()
     }
 
     var nameManager: String? = null
     var namePartner: String? = null
-    var listTask: MutableList<Task> = mutableListOf()
     var adapter: TaskAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,13 +53,10 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         setControl()
         setEvent()
     }
-
-
     private fun setEvent() {
         tvNameBT_detail.text = businessTrip!!.name_trip
         tvLocationBT_detail.text = businessTrip!!.location_trip
         tvDetaiBT_detail.text = businessTrip!!.detail_trip
-        tvLinkGoogleMap.text = businessTrip!!.link_googleMap
         tvDateBeginBT_detail.text = convertDateFormat(businessTrip!!.time_begin_trip)
         tvDateEndBT_detail.text = convertDateFormat(businessTrip!!.time_end_trip)
         tvDateCreateBT_detail.text = convertDateFormat(businessTrip!!.time_cre_trip)
@@ -69,8 +66,6 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         btnRate.setOnClickListener() {
             val intent = Intent(applicationContext, RateActivity::class.java)
             intent.putExtra("businessTripID", businessTrip?.businessTripId)
-            intent.putExtra("businessTripName", businessTrip?.name_trip)
-            intent.putExtra("managerID", businessTrip?.managerID)
             startActivity(intent)
         }
         btnReport.setOnClickListener() {
@@ -78,9 +73,16 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
             intent.putExtra("businessTripID", businessTrip?.businessTripId)
             startActivity(intent)
         }
+        btnMapBTdetial.setOnClickListener(){
+            val intent = Intent(applicationContext, LocationActivity::class.java)
+            intent.putExtra("latitudeTrip", businessTrip?.latitudeTrip)
+            intent.putExtra("longitudeTrip", businessTrip?.longitudeTrip)
+            startActivity(intent)
+        }
         btnPrevious.setOnClickListener() {
             onBackPressed()
         }
+
     }
 
     private fun setControl() {
@@ -92,8 +94,8 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
         tvDateBeginBT_detail = findViewById(R.id.tvDateBeginBT_detail)
         tvDateEndBT_detail = findViewById(R.id.tvDateEndBT_detail)
         tvDateCreateBT_detail = findViewById(R.id.tvDateCreateBT_detail)
-        tvLinkGoogleMap = findViewById(R.id.tvLinkGoogleMap)
         btnPrevious = findViewById(R.id.btnPreviousTripDetail)
+        btnMapBTdetial = findViewById(R.id.btnMapBTdetial)
         btnRate = findViewById(R.id.btnRate)
         btnReport = findViewById(R.id.btnReport)
 
@@ -180,7 +182,7 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
     override fun onRefuseClicked(taskPosition: Task) {
         val intent = Intent(this, ReportActivity::class.java)
         intent.putExtra("taskPosition", taskPosition)
-        intent.putExtra("businessTripID", businessTrip?.businessTripId)
+        intent.putExtra("RefuseStatus", 1)
         startActivityForResult(intent, REQUEST_CODE_ACTIVITY_RESUFE)
     }
 

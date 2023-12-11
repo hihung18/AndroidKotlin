@@ -183,7 +183,6 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10sp"
                         android:background="@drawable/input_login"
-                        android:backgroundTint="#ffffff"
                         android:paddingStart="20sp"
                         android:paddingTop="10sp"
                         android:paddingEnd="20sp"

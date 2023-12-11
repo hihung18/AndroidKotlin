@@ -208,7 +208,8 @@ class LoginActivity : AppCompatActivity() {
             }
             val tokenDevice = task.result
             var userLogin = userInfoLogin
-            if (userLogin!!.tokenDevice == "") {
+//            if (userLogin!!.tokenDevice == "") {
+            if (userLogin!!.tokenDevice != tokenDevice) {
                 val userDetailNew = UserDetail(
                     userLogin.id,
                     userLogin.email,
@@ -221,17 +222,17 @@ class LoginActivity : AppCompatActivity() {
                     "ROLE_NV"
                 )
                 putUserDetail(userDetailNew.userId, userDetailNew)
-            } else if (userLogin!!.tokenDevice != tokenDevice) {
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage(
-                    "LOGIN ERROR!\n" + "You're signed in on another device." +
-                            " Please contact the administrator"
-                )
-                builder.setPositiveButton("Yes") { dialog, id ->
-                    return@setPositiveButton
-                }
-                val alertDialog = builder.create()
-                alertDialog.show()
+//            } else if (userLogin!!.tokenDevice != tokenDevice) {
+//                val builder = AlertDialog.Builder(this)
+//                builder.setMessage(
+//                    "LOGIN ERROR!\n" + "You're signed in on another device." +
+//                            " Please contact the administrator"
+//                )
+//                builder.setPositiveButton("Yes") { dialog, id ->
+//                    return@setPositiveButton
+//                }
+//                val alertDialog = builder.create()
+//                alertDialog.show()
             } else {
                 val intent = Intent(applicationContext, HomeActivity::class.java)
                 startActivity(intent)
@@ -241,7 +242,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun putUserDetail(userId: Int, userDetail: UserDetail) {
         RetrofitClient.apiService.putUserDetail(
-            userId, userDetail, LoginActivity.userInfoLogin!!.token
+            userId, userDetail, userInfoLogin!!.token
         )
             .enqueue(object : Callback<UserDetail> {
                 override fun onResponse(call: Call<UserDetail>, response: Response<UserDetail>) {

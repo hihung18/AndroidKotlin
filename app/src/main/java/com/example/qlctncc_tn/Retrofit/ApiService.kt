@@ -40,6 +40,9 @@ interface ApiService {
     @GET("rates")
     fun getListRatebyBusinessTripID(@Query("businessTripID") businessTripID: Int): Call<List<Rate>>
 
+    @GET("rates")
+    fun getListRatebyTaskID(@Query("taskID") taskID: Int): Call<List<Rate>>
+
     @POST("rates")
     fun postRate(@Body rate: Rate, @Header("Authorization") token: String): Call<Rate>
 
@@ -52,6 +55,9 @@ interface ApiService {
 
     @GET("reports")
     fun getListReportbyBusinessTripID(@Query("businessTripID") businessTripID: Int): Call<List<Report>>
+
+    @GET("reports")
+    fun getListReportbyTaskID(@Query("taskID") taskID: Int): Call<List<Report>>
 
     @GET("users")
     fun getAllUSer(): Call<List<UserDetail>>

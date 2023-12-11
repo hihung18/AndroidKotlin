@@ -60,7 +60,7 @@
         <EditText
             android:id="@+id/edtCommentRate"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="100dp"
             android:layout_margin="10dp"
             android:background="@drawable/custom_input"
             android:drawablePadding="10dp"

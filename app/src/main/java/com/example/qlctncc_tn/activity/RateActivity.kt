@@ -26,20 +26,33 @@ class RateActivity : AppCompatActivity() {
     lateinit var linerlayoutAdd: LinearLayout
     var adapter: RateAdapter? = null
     var businessTripID: Int? = 0
-    var managerID: Int? = 0
-    var businessTripName: String? = ""
+    var checkAdd = false
+    var taskPosition: Task? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rate)
         adapter = RateAdapter(this, listRate)
-        businessTripID = intent.getIntExtra("businessTripID", -1)
-        businessTripName = intent.getStringExtra("businessTripName")
-        managerID = intent.getIntExtra("managerID", -1)
+        if (intent.hasExtra("businessTripID")){
+            businessTripID = intent.getIntExtra("businessTripID", -1)
+            checkAdd = false
+        }else {
+            checkAdd = true
+        }
+        if (intent.hasExtra("taskPosition")) {
+            taskPosition = intent.getSerializableExtra("taskPosition") as? Task
+            if (taskPosition != null) {
+                checkAdd = true// thêm rate
+            }
+        }
         setControls()
-        getListRatebyBusinessTripID(businessTripID!!)
+        if (!checkAdd) getListRatebyBusinessTripID(businessTripID!!)
+        else getListRatebyTaskID(taskPosition!!.taskId)
     }
 
     private fun setEvent() {
+        if (!checkAdd) { // xem từ businesstrip Detail
+            btnAdd.visibility = View.GONE
+        }
         btnAdd.setOnClickListener() {
             linerlayoutAdd.visibility = View.VISIBLE
             edtCommentRate.text.clear()
@@ -58,12 +71,11 @@ class RateActivity : AppCompatActivity() {
                 )
                 return@setOnClickListener
             }
-            val businessTripID = BtDetailActivity.businessTrip?.businessTripId!!
             val userID = LoginActivity.userInfoLogin?.id!!
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val formattedDate = formatter.format(currentDate)
-            var rateNew = Rate(0, businessTripID, userID, comment, formattedDate)
+            var rateNew = Rate(0, taskPosition!!.taskId,userID, comment, formattedDate)
             postRate(rateNew)
         }
         btnPrevious.setOnClickListener() {
@@ -106,6 +118,31 @@ class RateActivity : AppCompatActivity() {
                 }
             })
     }
+    private fun getListRatebyTaskID(taskID: Int) {
+        RetrofitClient.apiService.getListRatebyTaskID(taskID)
+            .enqueue(object : Callback<List<Rate>> {
+                override fun onResponse(call: Call<List<Rate>>, response: Response<List<Rate>>) {
+                    if (response.isSuccessful) {
+                        listRate = response.body() as MutableList<Rate>
+                        val listView = findViewById<ListView>(R.id.lvRate)
+                        if (listRate.isNotEmpty()) {
+                            adapter = RateAdapter(this@RateActivity, listRate)
+                        } else {
+                            adapter = RateAdapter(this@RateActivity, emptyList())
+                        }
+
+                        listView.adapter = adapter
+                        setEvent()
+                        println("getListRate by businessTripID Call API Successful ")
+                    } else {
+                        println("getListRate by businessTripID Call API ERROR ")
+                    }
+                }
+                override fun onFailure(call: Call<List<Rate>>, t: Throwable) {
+                    println("getListRate by businessTripID Call API ERROR " + t)
+                }
+            })
+    }
 
     private fun postRate(rate: Rate) {
         val token = LoginActivity.userInfoLogin?.token!!
@@ -122,14 +159,14 @@ class RateActivity : AppCompatActivity() {
                         val lisUserDetial = HomeActivity.listAllUser
                         var manager:UserDetail? = null
                         for (user in lisUserDetial){
-                            if (user.userId == managerID) {
+                            if (user.userId == taskPosition!!.userID) {
                                 manager = user
                                 break
                             }
                         }
                         val notificationFCM = NotificationFCM()
                         notificationFCM.addToNotification("title", "Hi "+ manager!!.fullName+ " , You have a new Rate")
-                        notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in Trip: "+ businessTripName)
+                        notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in Trip: "+ taskPosition!!.nameTask)
                         notificationFCM.to = manager!!.tokeDevice
                         sendNotificationFCM(notificationFCM)
                         println("Post Rate is successful")

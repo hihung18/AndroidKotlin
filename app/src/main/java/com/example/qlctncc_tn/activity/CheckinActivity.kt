@@ -73,10 +73,9 @@ class CheckinActivity : AppCompatActivity() {
             val currentDate = Date()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             val formattedDate = formatter.format(currentDate)
-            var reportNew: Report = Report(
+            var reportNew = Report(
                 0,
-                LoginActivity.userInfoLogin!!.id,
-                BtDetailActivity.businessTrip!!.businessTripId,
+                taskPosition!!.taskId,
                 detail,
                 formattedDate,
                 listImageUrl

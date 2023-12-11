@@ -10,15 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat.startActivity
 import com.example.qlctncc_tn.Model.Rate
 import com.example.qlctncc_tn.Model.Task
 import com.example.qlctncc_tn.R
 import com.example.qlctncc_tn.Retrofit.RetrofitClient
 import com.example.qlctncc_tn.Util.ShowDialog
-import com.example.qlctncc_tn.activity.BtDetailActivity
-import com.example.qlctncc_tn.activity.CheckinActivity
-import com.example.qlctncc_tn.activity.HomeActivity
-import com.example.qlctncc_tn.activity.LoginActivity
+import com.example.qlctncc_tn.activity.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +33,8 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
     lateinit var  btnRefuseTask : Button
     lateinit var  btnCompleteTask : Button
     lateinit var  btnCheckinTask : Button
+    lateinit var  btnReportTask : Button
+    lateinit var  btnRateTask : Button
     lateinit var  tvRefused : TextView
     val statusBusinessTrip = statusBT
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -53,6 +53,8 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
         btnCheckinTask = rowView.findViewById(R.id.btnCheckinTask)
         btnConfirmTask = rowView.findViewById(R.id.btnConfirmTask)
         btnRefuseTask = rowView.findViewById(R.id.btnRefuseTask)
+        btnReportTask = rowView.findViewById(R.id.btnReportTask)
+        btnRateTask = rowView.findViewById(R.id.btnRateTask)
 
         tvSTT_Task_item.text = (position+1).toString()
         tvTask_detail_item.text = taskPosition.detailTask
@@ -74,11 +76,17 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
         btnRefuseTask.visibility = View.GONE
         btnCheckinTask.visibility = View.GONE
         btnCompleteTask.visibility = View.GONE
+        btnRateTask.visibility = View.GONE
+        btnReportTask.visibility = View.GONE
+
         ///check userID
         if (taskPosition.userID == LoginActivity.userInfoLogin?.id){
-
+            btnRateTask.visibility = View.VISIBLE
+            btnReportTask.visibility = View.VISIBLE
             if (taskPosition.statusConfirm == -1){
                 tvRefused.visibility = View.VISIBLE
+                btnRateTask.visibility = View.GONE
+                btnReportTask.visibility = View.GONE
 
             }
             else if (taskPosition.statusConfirm == 0){
@@ -149,7 +157,17 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             if (statusBusinessTrip != 0 && statusBusinessTrip != 1) return@setOnClickListener
             listener.onRefuseClicked(taskPosition)
         }
-
+        btnReportTask.setOnClickListener() {
+            val intent = Intent(context, ReportActivity::class.java)
+            intent.putExtra("taskPosition",taskPosition )
+            intent.putExtra("newReportStatus",1 )
+            context.startActivity(intent)
+        }
+        btnRateTask.setOnClickListener() {
+            val intent = Intent(context, RateActivity::class.java)
+            intent.putExtra("taskPosition",taskPosition )
+            context.startActivity(intent)
+        }
         return rowView
     }
     private fun convertDateFormat(inputDate: String): String {

@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qlctncc_tn.Model.Report
+import com.example.qlctncc_tn.Model.Task
 import com.example.qlctncc_tn.R
+import com.example.qlctncc_tn.activity.BtDetailActivity
 import com.example.qlctncc_tn.activity.HomeActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,8 +34,14 @@ class ReportAdapter(private val context: Context, private val listReport: List<R
         tvReport_detail_item.text = reportPosition.report_detail
         tvdateReport_cre_item.text = "Ngày tạo: " + convertDateFormat(reportPosition.time_cre_rp)
 
+        var task:Task?=null
+        for (t in BtDetailActivity.listTask) {
+            if (t.taskId == reportPosition.taskID) {
+                task = t
+            }
+        }
         for (user in HomeActivity.listAllUser) {
-            if (user.userId == reportPosition.userID) {
+            if (user.userId == task!!.userID) {
                 if (user.fullName == "") {
                     tvUserReport_item.text = user.username
                     break
@@ -42,7 +50,6 @@ class ReportAdapter(private val context: Context, private val listReport: List<R
                 break
             }
         }
-
         val layoutManager = GridLayoutManager(context, 4)
         rvImageRpItem.layoutManager = layoutManager
         var adapterReImage = ImageSmallAdapter(reportPosition.imageUrls)
