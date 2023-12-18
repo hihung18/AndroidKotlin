@@ -159,7 +159,7 @@ class RateActivity : AppCompatActivity() {
                         val lisUserDetial = HomeActivity.listAllUser
                         var manager:UserDetail? = null
                         for (user in lisUserDetial){
-                            if (user.userId == taskPosition!!.userID) {
+                            if (user.userId == BtDetailActivity.businessTrip!!.managerID) {
                                 manager = user
                                 break
                             }
@@ -168,6 +168,7 @@ class RateActivity : AppCompatActivity() {
                         notificationFCM.addToNotification("title", "Hi "+ manager!!.fullName+ " , You have a new Rate")
                         notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in Trip: "+ taskPosition!!.nameTask)
                         notificationFCM.to = manager!!.tokeDevice
+                        println(notificationFCM)
                         sendNotificationFCM(notificationFCM)
                         println("Post Rate is successful")
                     } else {

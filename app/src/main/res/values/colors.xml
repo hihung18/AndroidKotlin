@@ -20,6 +20,7 @@
     <color name="yellow">#FFEA00</color>
     <color name="green_yellow">#C6FF00</color>
     <color name="green">#76FF03</color>
+    <color name="greenyblack">#51B300</color>
     <color name="blue">#1D3DEF</color>
     <color name="design_default_color_error">#DA3737</color>
 </resources>

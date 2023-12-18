@@ -28,7 +28,6 @@ class ForgotPassword_EnterEmail : AppCompatActivity() {
     private lateinit var btnPrevious: ImageButton
     private lateinit var txtEnterEmail: EditText
     private var checkSendEmail = false
-
     companion object {
         var otpCode = -1
         var emailInput = ""
@@ -44,7 +43,7 @@ class ForgotPassword_EnterEmail : AppCompatActivity() {
     private fun addEvent() {
         btnEnterEmail.setOnClickListener(View.OnClickListener {
             val email =
-                txtEnterEmail.text.toString().trim { it <= ' ' }.lowercase(Locale.getDefault())
+                txtEnterEmail.text.toString().trim().lowercase(Locale.getDefault())
             if (email.length == 0) {
                 openDialogEnterEmail(false, "Please enter your Email!")
                 return@OnClickListener
@@ -83,7 +82,7 @@ class ForgotPassword_EnterEmail : AppCompatActivity() {
     fun sendEmailOTP() {
         try {
             val email =
-                txtEnterEmail.text.toString().trim { it <= ' ' }.lowercase(Locale.getDefault())
+                txtEnterEmail.text.toString().trim ().lowercase(Locale.getDefault())
             val stringSenderEmail = "lequanghungb2@gmail.com"
             val stringPasswordSenderEmail = "pmmzptlksdyhgffy"
             val stringHost = "smtp.gmail.com"
@@ -99,7 +98,7 @@ class ForgotPassword_EnterEmail : AppCompatActivity() {
             })
             val mimeMessage = MimeMessage(session)
             mimeMessage.addRecipient(Message.RecipientType.TO, InternetAddress(email))
-            otpCode = (Math.random() * (999999 - 100000 + 1) + 100000).toInt()
+            otpCode  = (100000..999999).random()
             mimeMessage.subject = "Mã xác thực OTP đổi mật khẩu"
             mimeMessage.setText(
                 "Chào bạn,\n" + "Bạn đang thực hiện lấy lại mật khẩu mới trên ứng dụng Quản lý chuyến công tác ngoài cơ quan. Để tránh rủi ro, vui lòng không gửi OTP cho bất kỳ ai. Mã OTP: $otpCode"

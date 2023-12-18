@@ -93,14 +93,7 @@ class ReportActivity : AppCompatActivity() {
             if (checkRefuse) detail = "REFUSE: " + taskPosition!!.nameTask + "\n" + detail
             if (detail.isEmpty()) {
                 val dialog = Dialog(this)
-                val showDialog = ShowDialog(
-                    dialog,
-                    false,
-                    "Please enter rate detail",
-                    this,
-                    LoginActivity::class.java,
-                    true
-                )
+                val showDialog = ShowDialog(dialog, false, "Please enter rate detail", this, LoginActivity::class.java, true)
                 return@setOnClickListener
             }
             val currentDate = Date()
@@ -134,6 +127,28 @@ class ReportActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         adapterReImage = ImageAdapter(listImageUrl)
         recyclerView.adapter = adapterReImage
+    }
+    /// Load ảnh lên
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri: Uri = data.data!!
+            val storageRef = Firebase.storage.reference
+            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+            val uploadTask = imagesRef.putFile(imageUri)
+            uploadTask.addOnSuccessListener { taskSnapshot ->
+                imagesRef.downloadUrl.addOnSuccessListener { uri ->
+                    val imageUrl = uri.toString()
+                    listImageUrl.add(imageUrl)
+                    adapterReImage!!.notifyDataSetChanged()
+                    println("Upload Image Success")
+                }.addOnFailureListener {
+                    println("Upload ERROR")
+                }
+            }.addOnFailureListener { e ->
+                println("Upload ERROR")
+            }
+        }
     }
 
     private fun getListRateByBusinessTripID(businessTripID: Int) {
@@ -244,29 +259,7 @@ class ReportActivity : AppCompatActivity() {
             })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            val imageUri: Uri = data.data!!
-            val storageRef = Firebase.storage.reference
-            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
-            val uploadTask = imagesRef.putFile(imageUri)
-            uploadTask.addOnSuccessListener { taskSnapshot ->
-                imagesRef.downloadUrl.addOnSuccessListener { uri ->
-                    val imageUrl = uri.toString()
-                    listImageUrl.add(imageUrl)
-                    adapterReImage!!.notifyDataSetChanged()
 
-                    println("Upload Image Success")
-                }.addOnFailureListener {
-
-                    println("Upload ERROR")
-                }
-            }.addOnFailureListener { e ->
-                println("Upload ERROR")
-            }
-        }
-    }
 
     private fun putTask(taskID: Int, taskPut: Task) {
         RetrofitClient.apiService.putTask(taskID, taskPut, LoginActivity.userInfoLogin!!.token)

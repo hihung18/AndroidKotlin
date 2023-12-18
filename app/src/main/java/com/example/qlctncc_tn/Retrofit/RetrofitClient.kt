@@ -5,7 +5,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 object RetrofitClient {
     private val client = OkHttpClient.Builder()
         .connectTimeout(100, TimeUnit.SECONDS)
@@ -13,6 +12,7 @@ object RetrofitClient {
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()
+//        .baseUrl("http://10.252.1.30:8080/api/")
         .baseUrl("http://192.168.10.130:8080/api/")
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())

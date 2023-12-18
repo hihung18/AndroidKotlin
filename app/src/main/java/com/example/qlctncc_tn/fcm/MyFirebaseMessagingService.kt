@@ -1,6 +1,5 @@
 package com.example.qlctncc_tn.fcm
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,7 +9,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.qlctncc_tn.MyApplication
 import com.example.qlctncc_tn.R
-import com.example.qlctncc_tn.activity.CheckinActivity
 import com.example.qlctncc_tn.activity.LoginActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -30,7 +28,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
-
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
                 .setContentText(title)

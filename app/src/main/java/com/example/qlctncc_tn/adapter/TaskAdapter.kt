@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
+import com.example.qlctncc_tn.Model.BusinessTrip
 import com.example.qlctncc_tn.Model.Rate
 import com.example.qlctncc_tn.Model.Task
 import com.example.qlctncc_tn.R
@@ -27,7 +28,7 @@ interface TaskAdapterListener {
     fun onCheckinClicked(taskPosition:Task)
 }
 class TaskAdapter(private val context: Context, private val listTasks: List<Task>
-,private val listener: TaskAdapterListener,statusBT: Int) :
+,private val listener: TaskAdapterListener,businessTrip: BusinessTrip) :
     ArrayAdapter<Task>(context, R.layout.list_item_task, listTasks) {
     lateinit var  btnConfirmTask : Button
     lateinit var  btnRefuseTask : Button
@@ -36,7 +37,8 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
     lateinit var  btnReportTask : Button
     lateinit var  btnRateTask : Button
     lateinit var  tvRefused : TextView
-    val statusBusinessTrip = statusBT
+    val bsTrip = businessTrip
+    val statusBusinessTrip = businessTrip.statusBusinessTrip
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val rowView = inflater.inflate(R.layout.list_item_task, parent, false)
@@ -132,6 +134,11 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             val builder = AlertDialog.Builder(context)
             builder.setMessage("You definitely confirm the task?")
             builder.setPositiveButton("Yes") { dialog, id ->
+//                var checkTrung = false
+//                for (bt in HomeActivity.listBT){
+//                    checkTrung = checkDateOverlap(bt.time_begin_trip,bt.time_end_trip,bsTrip.time_begin_trip,bsTrip.time_end_trip)
+//                }
+//                if (checkTrung) return@setPositiveButton
                 taskPosition.statusConfirm = 1
                 putTask(taskPosition.taskId, taskPosition)
                 notifyDataSetChanged()
@@ -149,8 +156,18 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
             btnCheckinTask.setBackgroundColor(Color.GREEN)
         }
         btnCheckinTask.setOnClickListener {
+
             if (taskPosition.statusCheckIn == 1 || (statusBusinessTrip != 0 && statusBusinessTrip != 1)) return@setOnClickListener
-            println("click btn")
+//            if (bsTrip.statusBusinessTrip != 2){
+//                val builder = AlertDialog.Builder(context)
+//                builder.setMessage("Outside check-in time!")
+//                builder.setPositiveButton("Yes") { dialog, id ->
+//                }
+//                val alertDialog = builder.create()
+//                alertDialog.show()
+//                return@setOnClickListener
+//            }
+            /// click
             listener.onCheckinClicked(taskPosition)
         }
         btnRefuseTask.setOnClickListener(){
@@ -200,4 +217,14 @@ class TaskAdapter(private val context: Context, private val listTasks: List<Task
                 }
             })
     }
+//    fun checkDateOverlap(date1: String, date2: String, date3: String, date4: String): Boolean {
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//        val start1 = dateFormat.parse(date1)
+//        val end1 = dateFormat.parse(date2)
+//        val start2 = dateFormat.parse(date3)
+//        val end2 = dateFormat.parse(date4)
+//        // Kiểm tra xem có sự trùng lắp giữa hai khoảng ngày hay không
+//        val overlap = !(end1.before(start2) || end2.before(start1))
+//        return overlap
+//    }
 }

@@ -37,19 +37,23 @@ class BusinessTripAdapter(private val context: Context, private val businessTrip
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow))
             }
             1-> {
-                tvstatusBTItem.text = "PROCESSING"
-                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow_orange))
-            }
-            2-> {
-                tvstatusBTItem.text = "FINISHED"
-                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.green_yellow))
-            }
-            3-> {
-                tvstatusBTItem.text = "COMPLETE"
+                tvstatusBTItem.text = "READY"
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
             }
+            2-> {
+                tvstatusBTItem.text = "PROCESSING"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.orange))
+            }
+            3-> {
+                tvstatusBTItem.text = "FINISHED"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.yellow_orange))
+            }
             4-> {
-                tvstatusBTItem.text = "CANCELLED"
+                tvstatusBTItem.text = "COMPLETE"
+                tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context,R.color.greenyblack))
+            }
+            5-> {
+                tvstatusBTItem.text = "POSTPONED"
                 tvstatusBTItem.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
             }
         }

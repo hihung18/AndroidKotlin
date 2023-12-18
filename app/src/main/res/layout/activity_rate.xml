@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:layout_weight="60"
             android:gravity="center"
-            android:text="Rate"
+            android:text="Conversation"
             android:textColor="@color/orange"
             android:textSize="30sp"
             android:textStyle="bold" />

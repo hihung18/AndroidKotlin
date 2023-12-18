@@ -161,10 +161,11 @@ class BtDetailActivity : AppCompatActivity(), TaskAdapterListener {
                         if (listTask.isNotEmpty()) {
                             adapter =
                                 TaskAdapter(this@BtDetailActivity, listTask, this@BtDetailActivity,
-                                    businessTrip!!.statusBusinessTrip)
+                                    businessTrip!!
+                                )
                         } else {
                             adapter = TaskAdapter(this@BtDetailActivity, emptyList(), this@BtDetailActivity
-                            , businessTrip!!.statusBusinessTrip)
+                            , businessTrip!!)
                         }
                         listView.adapter = adapter
                     } else {

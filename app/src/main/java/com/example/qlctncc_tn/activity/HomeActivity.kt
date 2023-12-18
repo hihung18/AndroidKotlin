@@ -21,6 +21,7 @@ import retrofit2.Response
 class HomeActivity : AppCompatActivity() {
     companion object {
         var listAllUser: List<UserDetail> = ArrayList<UserDetail>()
+        var listBT: MutableList<BusinessTrip> = mutableListOf()
     }
 
     private lateinit var navigationView: NavigationView
@@ -82,10 +83,10 @@ class HomeActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         listBusinessTrip = response.body() ?: emptyList()
                         println("List BusinessTrip Call API ok")
-                        var listBT: MutableList<BusinessTrip> = mutableListOf()
+                        listBT = mutableListOf()
                         var listBTHistory: MutableList<BusinessTrip> = mutableListOf()
                         for (bt in listBusinessTrip) {
-                            if (bt.statusBusinessTrip == 0 || bt.statusBusinessTrip == 1)
+                            if (bt.statusBusinessTrip == 0 || bt.statusBusinessTrip == 1 || bt.statusBusinessTrip == 2)
                                 listBT.add(bt)
                             else listBTHistory.add(bt)
                         }
