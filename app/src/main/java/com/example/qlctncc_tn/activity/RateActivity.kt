@@ -151,11 +151,7 @@ class RateActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Rate>, response: Response<Rate>) {
                     if (response.isSuccessful) {
                         val rateNew = response.body()
-                        if (rateNew != null) {
-                            listRate.add(rateNew)
-                        }
-                        linerlayoutAdd.visibility = View.GONE
-                        adapter!!.notifyDataSetChanged()
+
                         val lisUserDetial = HomeActivity.listAllUser
                         var manager:UserDetail? = null
                         for (user in lisUserDetial){
@@ -165,12 +161,18 @@ class RateActivity : AppCompatActivity() {
                             }
                         }
                         val notificationFCM = NotificationFCM()
-                        notificationFCM.addToNotification("title", "Hi "+ manager!!.fullName+ " , You have a new Rate")
-                        notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in Trip: "+ taskPosition!!.nameTask)
+                        notificationFCM.addToNotification("title", "Hi "+ manager!!.fullName + ", You have a new conversation")
+                        notificationFCM.addToNotification("body", "From "+ LoginActivity.userInfoLogin!!.fullName + " in task: "+ taskPosition!!.nameTask)
                         notificationFCM.to = manager!!.tokeDevice
                         println(notificationFCM)
                         sendNotificationFCM(notificationFCM)
                         println("Post Rate is successful")
+
+                        if (rateNew != null) {
+                            listRate.add(rateNew)
+                        }
+                        linerlayoutAdd.visibility = View.GONE
+                        adapter!!.notifyDataSetChanged()
                     } else {
                         println("Post Rate is ERROR")
                     }

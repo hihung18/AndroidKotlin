@@ -85,7 +85,6 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
                         polylineOptions.add(currentLatLng, locationTrip)
                         polylineOptions.width(5f) //kich thuoc duong ke
                         polylineOptions.color(Color.BLUE)
-                        // Thêm Polyline vào GoogleMap
                         val polyline = googleMap.addPolyline(polylineOptions)
                         displayDistanceBetweenLocations(currentLatLng,locationTrip)
                     }
@@ -115,7 +114,6 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         val customTitle = findViewById<TextView>(R.id.tvdistance)
         customTitle.text = distanceText
     }
-
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
     }
